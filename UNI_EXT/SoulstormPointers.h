@@ -55,9 +55,9 @@
 //offsets are in format _steam, _cd
 FUNCPTR(SOULSTORM, sub_78F520, int* __stdcall, (int, int, int), 0x38F520, -1)
 
-ASMPTR(SOULSTORM, buttonToggleArmyClicked_I, 0x38DB80, -1)
+ASMPTR(SOULSTORM, buttonToggleArmyClicked_I, 0x78DB80, -1)
 ASMPTR(SOULSTORM, aToggleArmy_I, 0x6D4058, -1)
-ASMPTR(SOULSTORM, aDeepStrike_I, 0x6D4020, -1)
+ASMPTR(SOULSTORM, aDeepStrike_I, 0xAD4020, -1)
 //VARPTR(SOULSTORM, buttonToggleArmyClicked, DWORD, 0x78DB80, -1)
 
 #undef FUNCPTR

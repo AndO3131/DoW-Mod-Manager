@@ -983,9 +983,15 @@ namespace DoW_Mod_Manager
             CREATE_IGNORE_SYSTEM_DEFAULT = 0x80000000,
         }
 
-        [DllImport("UNI_EXT.dll", CharSet = CharSet.Auto)]
-        public static extern void DetourCreateProcessWithDllEx(string lpApplicationName,
-                                          string lpCommandLine,
+        [DllImport("UNI_EXT.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DetourCreateProcessWithDllExAdapter(string lpApplicationName,
+            string lpCommandLine,
+            bool bInheritHandles,
+			string lpCurrentDirectory,
+            string lpDllName);
+        /*
+        public static extern void DetourCreateProcessWithDllExA(string lpApplicationName,
+                                          StringBuilder lpCommandLine,
                                           ref SECURITY_ATTRIBUTES lpProcessAttributes,
                                           ref SECURITY_ATTRIBUTES lpThreadAttributes,
                                           bool bInheritHandles,
@@ -996,7 +1002,7 @@ namespace DoW_Mod_Manager
                                           out PROCESS_INFORMATION lpProcessInformation,
                                           string lpDllName,
                                           out PDETOUR_CREATE_PROCESS_ROUTINEA pfCreateProcessA);
-
+*/
         /// <summary>
         /// This method handles starting an instance of CurrentGameEXE with arguments
         /// </summary>
@@ -1012,28 +1018,18 @@ namespace DoW_Mod_Manager
                 arguments += " -nomovies";
             if (settings[FORCE_HIGH_POLY] == 1)
                 arguments += " -forcehighpoly";
+
+            string ssPath = Path.Combine(CurrentDir, CurrentGameEXE);
+            string dllPath = Path.Combine(CurrentDir, "UNI_EXT.dll");
+
+            DetourCreateProcessWithDllExAdapter(ssPath, arguments, false, CurrentDir, dllPath);
             /*
-            Process proc = new Process();
-            proc.StartInfo.FileName = CurrentGameEXE;
-            proc.StartInfo.Arguments = arguments;
-            proc.Start();
-           */
-            STARTUPINFO si = new STARTUPINFO();
-            PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
-            SECURITY_ATTRIBUTES pa = new SECURITY_ATTRIBUTES();
-            SECURITY_ATTRIBUTES ta = new SECURITY_ATTRIBUTES();
-            PDETOUR_CREATE_PROCESS_ROUTINEA cp = new PDETOUR_CREATE_PROCESS_ROUTINEA();
-
-            si.cb = Marshal.SizeOf(si);
-            si.dwFlags = StartFlags.STARTF_USESHOWWINDOW;
-            si.wShowWindow = WindowShowStyle.Show; 
-
-            DetourCreateProcessWithDllEx(CurrentGameEXE, arguments, ref pa, ref ta, true,
+            DetourCreateProcessWithDllExA(CurrentGameEXE, sbArguments, ref pa, ref ta, true,
                    ProcessCreationFlags.CREATE_DEFAULT_ERROR_MODE | ProcessCreationFlags.CREATE_SUSPENDED,
-                   IntPtr.Zero, null, ref si, out pi,
+                   IntPtr.Zero, CurrentDir, ref si, out pi,
                    "UNI_EXT.dll", out cp);
         
-            /*
+            
             _dowProcessName = proc.ProcessName;
 
             // Create new thread to change the process CPU affinity after the game has started.

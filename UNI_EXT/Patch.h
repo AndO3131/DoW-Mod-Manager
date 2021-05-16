@@ -35,7 +35,7 @@ public:
 	Patch(PatchType type, Dll dll, Offsets offsets, int function, int length);
 	Patch(PatchType type, Dll dll, Offsets offsets, Substitutions substitutions, int length);
 
-	bool Install();
+	bool Install(HINSTANCE instance);
 	bool Remove();
 
 	bool IsInstalled() { return injected; };

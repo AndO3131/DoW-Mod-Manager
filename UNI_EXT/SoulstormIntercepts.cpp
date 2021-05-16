@@ -32,7 +32,7 @@ int __declspec(naked) new_BindButtonClickedEntry_Function()
 	// save stack
 	__asm
 	{
-		pop return_address
+		pop		return_address
 		//pushad
 	}
 
@@ -57,7 +57,7 @@ int __declspec(naked) new_BindButtonClickedEntry_Function()
 		//popad
 		push    esi
 		lea     edx, [esp + 0x24 - 0x10]
-		push return_address
+		push	return_address
 		ret
 	}
 }

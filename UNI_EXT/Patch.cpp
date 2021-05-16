@@ -3,6 +3,7 @@
 
 #include "Patch.h"
 #include "SoulstormVersion.h"
+#include "Include\detours.h"
 
 std::vector<Patch*> Patch::Patches;
 
@@ -52,7 +53,7 @@ bool Patch::WriteBytes(int address, int len, BYTE* bytes) {
 	return !!VirtualProtect((void*)address, len, dwOld, &dwOld);
 }
 
-bool Patch::Install() {
+bool Patch::Install(HINSTANCE instance) {
 
 	//Check if we have already installed this patch.
 	if (IsInstalled())
@@ -93,10 +94,14 @@ bool Patch::Install() {
 		}
 	}
 
+	//DetourCopyPayloadToProcess(instance, PARENT_HANDLE_PAYLOAD, code, length);
+
 	//Write the patch in
+	/*
 	VirtualProtect((VOID*)address, length, PAGE_EXECUTE_READWRITE, &protect);
 	memcpy_s((VOID*)address, length, code, length);
 	VirtualProtect((VOID*)address, length, protect, &protect);
+	*/
 /*
 	DWORD old;
 	DWORD base = (DWORD)GetModuleHandle(NULL);

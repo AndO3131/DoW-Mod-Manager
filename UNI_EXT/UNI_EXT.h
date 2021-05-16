@@ -13,4 +13,12 @@ namespace UNI_EXT {
 	extern void Startup(HINSTANCE instance);
 
 	extern bool Shutdown();
+
+	extern "C" {
+		BOOL DetourCreateProcessWithDllExAdapter(const char* lpApplicationName,
+			const char* lpCommandLine,
+			BOOL bInheritHandles,
+			const char* lpCurrentDirectory,
+			const char* lpDllName);
+	}
 }
