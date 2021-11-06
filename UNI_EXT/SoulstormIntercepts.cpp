@@ -1,9 +1,203 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <Windows.h>
 #include "SoulstormPointers.h"
 
 //DWORD patch_clip_region;
 //DWORD* base_address;
 DWORD return_address;
+
+int __stdcall placeCommanderModelOnMarker(int, int)
+{
+	__asm
+	{
+		
+		sub     esp, 0x134
+		/*
+		push    ebx
+		push    ebp
+		push    esi
+		push    edi
+		*/
+		mov     esi, ecx
+	    call    SOULSTORM_sub_96EAA0
+		mov     ecx, eax
+		call    SOULSTORM_sub_96F440
+		mov     ebp, [esp + 0x128 + 0x24] // arg_4
+		mov     ebx, [esp + 0x124 + 0x24] // arg_0
+		mov     edi, eax
+		mov     eax, [esi + 0x138]
+		mov		[eax + ebx * 4], ebp
+		mov     edx, [edi]
+		mov     eax, [edx + 0x228]
+		push    ebp
+		mov     ecx, edi
+		call    eax
+		push    eax
+		lea     ecx, [esp + 0x24 + 0x24] // var_104
+		push    SOULSTORM_aMrkr_S_cmd
+		push    ecx
+		call    sprintf
+		mov     edx, [esi + 0x160]
+		mov     eax, [esi + 0x0EC]
+		mov     eax, [eax + edx * 4]
+		mov     eax, [eax]
+		add     esp, 0x0C
+		test    eax, eax
+		jz      jump_1
+		mov     ecx, [eax + 0x0C]
+		mov		[esp + 0x24 - 0x14], ecx // var_138
+		jmp     jump_2
+jump_1: 
+		mov		[esp + 0x24 - 0x14], 0 // var_138
+jump_2:
+		push    ecx
+		mov     edx, esp
+		lea     eax, [esp + 0x24 + 0x24] // var_104
+		push    eax
+		push    edx
+		call    SOULSTORM_checkKeyNameInDictionaryFunction
+		mov     ecx, [esp + 0x24 - 0x10] // var_138?var_134?
+		call    SOULSTORM_placeModelOnMarker
+		cmp     eax, 0x0FFFFFFFF
+		jz      jump_3
+		mov     edx, [esi + 0x160]
+		lea     ecx, [esp + 0x24 - 0x10] // var_134
+		push    ecx
+		push    eax
+		mov     eax, [esi + 0x0EC]
+		mov     ecx, [eax + edx * 4]
+		call    SOULSTORM_placeCommanderModelOnMarkerFunction_1
+		mov     edx, [edi]
+		mov     eax, [edx + 0x0F0]
+		push    ebx
+		mov     ecx, edi
+		call    eax
+		mov     edx, [edi]
+		mov     ebp, eax
+		mov     eax, [edx + 0x0F4]
+		push    ebx
+		mov     ecx, edi
+		call    eax
+		fstp	[esp + 0x24 - 0x14] // var_140
+		fld		[esp + 0x24 - 0x14] // var_140
+		mov     edx, [esi + 0x164]
+		push    ecx
+		fstp	[esp] // var_154
+		lea     ecx, [esp + 0x24 - 0x0C] // var_13C
+		push    ecx
+		push    ebp
+		add     edx, ebx
+		push    edx
+		mov     ecx, esi
+		call    SOULSTORM_placeCommanderModelOnMarkerFunction_2
+		pop     edi
+		pop     esi
+		pop     ebp
+		pop     ebx
+		add     esp, 0x134
+		retn    8
+jump_3:
+		mov     eax, [edi]
+		mov     edx, [eax + 0x228]
+		push    ebp
+		mov     ecx, edi
+		call    edx
+		push    eax
+		lea     eax, [esp + 0x24 + 0x24]
+		push    eax
+		push    SOULSTORM_aMarkerSMissing;
+		push    SOULSTORM_loc_415254
+		call    DEBUG_dbWarningfAux
+		add     esp, 0x10
+		pop     edi
+		pop     esi
+		pop     ebp
+		pop     ebx
+		add     esp, 0x134
+		
+		retn    8
+	}
+}
+
+int __stdcall displayCommanderModelOnMetamapGFXScreen(int, int)
+{
+	__asm
+	{
+		sub     esp, 8
+		/*
+		push    ebx
+		push    esi
+		push    edi
+		*/
+		mov     esi, ecx
+		call    SOULSTORM_sub_96EAA0
+		mov     ecx, eax
+		call    SOULSTORM_sub_96F440
+		mov     edx, [eax]
+		mov     ebx, [esi + 0x138]
+		mov     edi, [esp + 0x24 - 0xC] // arg_0
+		mov     ecx, eax
+		mov     eax, [edx + 0x210]
+		call    eax
+		cmp		[ebx + edi * 4], eax
+		mov     ebx, [esp + 0x24 - 0x8] // arg_4
+		push    ebx
+		mov     ecx, esi
+		push    edi
+		jnz     jump_4
+		call    placeCommanderModelOnMarker
+		mov     ecx, [esi + 0x138]
+		mov		[ecx + edi * 4], ebx
+		pop     edi
+		pop     esi
+		pop     ebx
+		add     esp, 8
+		retn    8
+jump_4:
+		//call    sub_499600 DISABLED
+		fstp	[esp + 0x24 - 0x18] // var_8
+		mov     eax, [esi + 0x184]
+		cmp     eax, [esi + 0x188]
+		lea     ecx, [esi + 0x180]
+		mov     edx, edi
+		mov		[esp + 0x24 - 0x14], edx // var_4
+		jz      jump_6
+		test    eax, eax
+		jz      jump_5
+		push    ebp
+		mov     ebp, [esp + 0x24 - 0x14] // var_4
+		mov		[eax], ebp
+		mov		[eax + 4], edx
+		pop     ebp		
+jump_5: 
+		add     dword ptr[ecx + 4], 8
+		mov     edx, [esi + 0x138]
+		mov		[edx + edi * 4], ebx
+		pop     edi
+		pop     esi
+		pop     ebx
+		add     esp, 8
+		retn    8
+	
+jump_6:
+		push    1
+		push    1
+		lea     edx, [esp + 0x24 + 0x0]
+		push    edx
+		lea     edx, [esp + 0x24 - 0xC]
+		push    edx
+		push    eax
+		call    SOULSTORM_displayCommanderModelOnMetamapGFXScreenFunction_1
+		mov     eax, [esi + 0x138]
+		mov		[eax + edi * 4], ebx
+		pop     edi
+		pop     esi
+		pop     ebx
+		add     esp, 8
+		retn    8
+	}
+}
 
 /*
 int __declspec(naked) Metamap_Action_Selector_Function()
@@ -82,6 +276,7 @@ int __stdcall runAction(int)
 		mov     ecx, edi
 		mov     byte ptr[esp - 0x8], bl
 		call    edx
+		/*
 		mov     byte ptr[esp - 0x4], al
 		
 		mov     eax, [esp - 0x4]
@@ -90,7 +285,7 @@ int __stdcall runAction(int)
 	    push    eax
 	    push    edx
 		call    SOULSTORM_toggleOverlayFunction
-
+		*/
 		
 		
 		sub     esp, 0x0C
@@ -395,6 +590,75 @@ int __declspec(naked) new_BindButtonClickedEntry_Function()
 	}
 }
 
+int __declspec(naked) new_PlaceObjectsOnMetamapFunction()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop		return_address
+		//push    SOULSTORM_aOnsidebarexite
+		//mov     ecx, edi
+		//call    ebx
+
+		//pushad
+	}
+
+	__asm
+	{
+		mov     ecx, [esi + 0x138]
+		mov     edx, [ecx + ebx * 4]
+		push    edx
+		push    ebx
+		mov     ecx, esi
+		call    placeCommanderModelOnMarker
+		//mov     edx, [esi + 0x138]
+		//fstp    st
+	}
+
+	//restore stack
+	//restore overwritten code
+	__asm
+	{
+	
+		push	return_address
+		ret
+	}
+}
+
+int __declspec(naked) new_displayCommanderModelOnMetamapGFXScreen()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop		return_address
+		//push    SOULSTORM_aOnsidebarexite
+		//mov     ecx, edi
+		//call    ebx
+
+		//pushad
+	}
+
+	__asm
+	{
+		push    eax
+		push    edi
+		mov     ecx, esi
+		call    displayCommanderModelOnMetamapGFXScreen
+		//mov     edx, [esi + 0x138]
+		//fstp    st
+	}
+
+	//restore stack
+	//restore overwritten code
+	__asm
+	{
+
+		push	return_address
+		ret
+	}
+}
 
 // funciton that disables stuff in load game screen
 int __declspec(naked) test_function()

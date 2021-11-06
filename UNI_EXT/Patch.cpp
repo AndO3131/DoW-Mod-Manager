@@ -21,7 +21,7 @@ Patch::Patch(PatchType type, Dll dll, Offsets offsets, Substitutions substitutio
 }
 
 int Patch::GetDllOffset(Dll dll, int offset) {
-	const wchar_t* szDlls[] = { L"SOULSTORM.exe", L"UserInterface.dll", L"WXPMod.dll" };
+	const wchar_t* szDlls[] = { L"SOULSTORM.exe", L"UserInterface.dll", L"WXPMod.dll", L"msvcr80.dll", L"Debug.dll" };
 	//Attempt to get the module of the given DLL
 	HMODULE hModule = GetModuleHandle(szDlls[dll]);
 

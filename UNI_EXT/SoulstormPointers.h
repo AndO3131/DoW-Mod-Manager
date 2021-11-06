@@ -113,6 +113,23 @@ FUNCPTR(SOULSTORM, loc_78DBD0, int __stdcall, (int), 0x38DBD0, -1)
 
 ASMPTR(SOULSTORM, aOnsidebarexite, 0x6D33B4, -1)
 
+// definition for placeCommanderModelOnMarker function
+ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D2803, -1)
+//ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D27E8, -1)
+ASMPTR(SOULSTORM, aMarkerSMissing, 0x6CECEC, -1)
+ASMPTR(SOULSTORM, loc_415254, 0x15254, -1)
+
+//FUNCPTR(MSVCR80, sprintf, int, (char *, const char *, ...), 0x4775D, -1)
+//FUNCPTR(MSVCR80, sprintf, int __cdecl, (int, int, int), 0x471DE, -1) + 58C - D
+FUNCPTR(SOULSTORM, checkKeyNameInDictionaryFunction, int __stdcall, (int, int), 0x4F5020, -1)
+FUNCPTR(SOULSTORM, placeModelOnMarker, int __stdcall, (int), 0x4DDA80, -1)
+FUNCPTR(SOULSTORM, placeCommanderModelOnMarkerFunction_1, int __stdcall, (int, int), 0x4F10B0, -1)
+FUNCPTR(SOULSTORM, placeCommanderModelOnMarkerFunction_2, int __stdcall, (int, int, int), 0x37B880, -1)
+FUNCPTR(DEBUG, dbWarningfAux, int __cdecl, (int, char *, char), 0x1420, -1)
+
+FUNCPTR(SOULSTORM, displayCommanderModelOnMetamapGFXScreenFunction_1, int __stdcall, (int, int, int, int, char), 0x2884C0, -1)
+
+
 #undef FUNCPTR
 #undef ASMPTR
 #undef VARPTR
