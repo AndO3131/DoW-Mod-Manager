@@ -33,10 +33,10 @@ int __stdcall placeCommanderModelOnMarker(int, int)
 		push    ebp
 		mov     ecx, edi
 		call    eax
-		push    eax
-		lea     ecx, [esp + 0x24 + 0x24] // var_104
+		//push    eax
+		lea     ecx, [esp + 0x24 + 0x24] // var_104 !!BYTE variable needed!! POSSIBLE VALUES: - 0xC, + 0x0
 		push    SOULSTORM_aMrkr_S_cmd
-		push    ecx
+		push	ecx
 		call    sprintf
 		mov     edx, [esi + 0x160]
 		mov     eax, [esi + 0x0EC]
@@ -91,11 +91,11 @@ jump_2:
 		push    edx
 		mov     ecx, esi
 		call    SOULSTORM_placeCommanderModelOnMarkerFunction_2
+		add     esp, 0x134
 		pop     edi
 		pop     esi
-		pop     ebp
 		pop     ebx
-		add     esp, 0x134
+		pop     ebp
 		retn    8
 jump_3:
 		mov     eax, [edi]
@@ -104,19 +104,19 @@ jump_3:
 		mov     ecx, edi
 		call    edx
 		push    eax
-		lea     eax, [esp + 0x24 + 0x24]
+		lea     eax, byte ptr [esp + 0x24 + 0x24]
 		push    eax
 		push    SOULSTORM_aMarkerSMissing;
 		push    SOULSTORM_loc_415254
 		call    DEBUG_dbWarningfAux
 		add     esp, 0x10
+		add     esp, 0x134
 		pop     edi
 		pop     esi
-		pop     ebp
 		pop     ebx
-		add     esp, 0x134
+		pop     ebp
 		
-		retn    8
+		retn	8
 	}
 }
 
