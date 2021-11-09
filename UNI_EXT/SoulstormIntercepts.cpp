@@ -104,7 +104,7 @@ jump_3:
 		mov     ecx, edi
 		call    edx
 		push    eax
-		lea     eax, byte ptr [esp + 0x24 + 0x24]
+		lea     eax, [esp + 0x24 + 0x24]
 		push    eax
 		push    SOULSTORM_aMarkerSMissing;
 		push    SOULSTORM_loc_415254
