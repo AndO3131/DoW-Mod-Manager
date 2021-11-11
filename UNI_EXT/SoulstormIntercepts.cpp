@@ -7,18 +7,18 @@
 //DWORD* base_address;
 DWORD return_address;
 
-int __stdcall placeCommanderModelOnMarker(int, int)
+int __declspec(naked) placeCommanderModelOnMarker(int, int)
 {
 	__asm
 	{
 		
 		sub     esp, 0x134
-		/*
+		
 		push    ebx
 		push    ebp
 		push    esi
 		push    edi
-		*/
+		
 		mov     esi, ecx
 	    call    SOULSTORM_sub_96EAA0
 		mov     ecx, eax
@@ -29,11 +29,11 @@ int __stdcall placeCommanderModelOnMarker(int, int)
 		mov     eax, [esi + 0x138]
 		mov		[eax + ebx * 4], ebp
 		mov     edx, [edi]
-		mov     eax, [edx + 0x228]
+		mov     eax, [edx + 0x288]
 		push    ebp
 		mov     ecx, edi
 		call    eax
-		//push    eax
+		push    eax
 		lea     ecx, [esp + 0x24 + 0x24] // var_104 !!BYTE variable needed!! POSSIBLE VALUES: - 0xC, + 0x0
 		push    SOULSTORM_aMrkr_S_cmd
 		push	ecx
@@ -91,15 +91,15 @@ jump_2:
 		push    edx
 		mov     ecx, esi
 		call    SOULSTORM_placeCommanderModelOnMarkerFunction_2
-		add     esp, 0x134
 		pop     edi
 		pop     esi
-		pop     ebx
 		pop     ebp
+		pop     ebx
+		add     esp, 0x134
 		retn    8
 jump_3:
 		mov     eax, [edi]
-		mov     edx, [eax + 0x228]
+		mov     edx, [eax + 0x288]
 		push    ebp
 		mov     ecx, edi
 		call    edx
@@ -110,26 +110,26 @@ jump_3:
 		push    SOULSTORM_loc_415254
 		call    DEBUG_dbWarningfAux
 		add     esp, 0x10
-		add     esp, 0x134
 		pop     edi
 		pop     esi
-		pop     ebx
 		pop     ebp
-		
+		pop     ebx
+		add     esp, 0x134
+
 		retn	8
 	}
 }
 
-int __stdcall displayCommanderModelOnMetamapGFXScreen(int, int)
+int __declspec(naked) displayCommanderModelOnMetamapGFXScreen(int, int)
 {
 	__asm
 	{
 		sub     esp, 8
-		/*
+		
 		push    ebx
 		push    esi
 		push    edi
-		*/
+		
 		mov     esi, ecx
 		call    SOULSTORM_sub_96EAA0
 		mov     ecx, eax
@@ -138,7 +138,7 @@ int __stdcall displayCommanderModelOnMetamapGFXScreen(int, int)
 		mov     ebx, [esi + 0x138]
 		mov     edi, [esp + 0x24 - 0xC] // arg_0
 		mov     ecx, eax
-		mov     eax, [edx + 0x210]
+		mov     eax, [edx + 0x270]
 		call    eax
 		cmp		[ebx + edi * 4], eax
 		mov     ebx, [esp + 0x24 - 0x8] // arg_4
@@ -152,6 +152,7 @@ int __stdcall displayCommanderModelOnMetamapGFXScreen(int, int)
 		pop     edi
 		pop     esi
 		pop     ebx
+		//pop		ebp
 		add     esp, 8
 		retn    8
 jump_4:
@@ -166,7 +167,7 @@ jump_4:
 		test    eax, eax
 		jz      jump_5
 		push    ebp
-		mov     ebp, [esp + 0x24 - 0x14] // var_4
+		mov     ebp, [esp + 0x24 - 0x14] // var_4?
 		mov		[eax], ebp
 		mov		[eax + 4], edx
 		pop     ebp		
@@ -177,15 +178,16 @@ jump_5:
 		pop     edi
 		pop     esi
 		pop     ebx
+		//pop		ebp
 		add     esp, 8
 		retn    8
 	
 jump_6:
 		push    1
 		push    1
-		lea     edx, [esp + 0x24 + 0x0]
+		lea     edx, [esp + 0x24 + 0x4]
 		push    edx
-		lea     edx, [esp + 0x24 - 0xC]
+		lea     edx, [esp + 0x24 - 0xC] // arg_0?
 		push    edx
 		push    eax
 		call    SOULSTORM_displayCommanderModelOnMetamapGFXScreenFunction_1
@@ -194,6 +196,7 @@ jump_6:
 		pop     edi
 		pop     esi
 		pop     ebx
+		//pop		ebp
 		add     esp, 8
 		retn    8
 	}

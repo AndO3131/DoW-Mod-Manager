@@ -114,9 +114,8 @@ FUNCPTR(SOULSTORM, loc_78DBD0, int __stdcall, (int), 0x38DBD0, -1)
 ASMPTR(SOULSTORM, aOnsidebarexite, 0x6D33B4, -1)
 
 // definition for placeCommanderModelOnMarker function
-//ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D2668, -1)
-ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D27FA, -1)
-//ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D2803, -1)
+//ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D27FA, -1)
+ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D2803, -1)
 //ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D27E8, -1)
 ASMPTR(SOULSTORM, aMarkerSMissing, 0x6CECEC, -1)
 ASMPTR(SOULSTORM, loc_415254, 0x15254, -1)
