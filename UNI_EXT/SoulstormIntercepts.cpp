@@ -23,8 +23,8 @@ int __declspec(naked) placeCommanderModelOnMarker(int, int)
 	    call    SOULSTORM_sub_96EAA0
 		mov     ecx, eax
 		call    SOULSTORM_sub_96F440
-		mov     ebp, [esp + 0x128 + 0x24] // arg_4
-		mov     ebx, [esp + 0x124 + 0x24] // arg_0
+		mov     ebp, [esp + 0x128 + 0x24] // arg_4	terrainID
+		mov     ebx, [esp + 0x124 + 0x24] // arg_0	raceID
 		mov     edi, eax
 		mov     eax, [esi + 0x138]
 		mov		[eax + ebx * 4], ebp
@@ -87,7 +87,7 @@ jump_2:
 		lea     ecx, [esp + 0x24 - 0x0C] // var_13C
 		push    ecx
 		push    ebp
-		add     edx, ebx
+		//add     edx, ebx		DISABLED FOR TESTING PURPOSES ONLY
 		push    edx
 		mov     ecx, esi
 		call    SOULSTORM_placeCommanderModelOnMarkerFunction_2
@@ -600,15 +600,16 @@ int __declspec(naked) new_PlaceObjectsOnMetamapFunction()
 	__asm
 	{
 		pop		return_address
-		//push    SOULSTORM_aOnsidebarexite
-		//mov     ecx, edi
-		//call    ebx
-
-		//pushad
+		
 	}
 
 	__asm
 	{
+		mov     edx, [esi + 0x138]
+		push    ebx
+		mov     ecx, esi
+		mov		[edx + ebx * 4], ebp
+		call    SOULSTORM_placeCommanderIconOnMetamap
 		mov     ecx, [esi + 0x138]
 		mov     edx, [ecx + ebx * 4]
 		push    edx

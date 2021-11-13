@@ -128,6 +128,8 @@ FUNCPTR(SOULSTORM, placeCommanderModelOnMarkerFunction_1, int __stdcall, (int, i
 FUNCPTR(SOULSTORM, placeCommanderModelOnMarkerFunction_2, int __stdcall, (int, int, int), 0x37B880, -1)
 FUNCPTR(DEBUG, dbWarningfAux, int __cdecl, (int, char *, char), 0x1420, -1)
 
+FUNCPTR(SOULSTORM, placeCommanderIconOnMetamap, int __stdcall, (int), 0x3773A0, -1)
+
 FUNCPTR(SOULSTORM, displayCommanderModelOnMetamapGFXScreenFunction_1, int __stdcall, (int, int, int, int, char), 0x2884C0, -1)
 
 
