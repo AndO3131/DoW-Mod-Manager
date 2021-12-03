@@ -14,10 +14,10 @@ int __declspec(naked) placeCommanderModelOnMarker(int, int)
 		
 		sub     esp, 0x134
 		
-		push    ebx
-		push    ebp
-		push    esi
-		push    edi
+		push    ebx // liczba
+		push    ebp // liczba
+		push    esi // wskaŸnik na adres pamiêci
+		push    edi // liczba
 		
 		mov     esi, ecx
 	    call    SOULSTORM_sub_96EAA0
@@ -29,17 +29,17 @@ int __declspec(naked) placeCommanderModelOnMarker(int, int)
 		mov     eax, [esi + 0x138]
 		mov		[eax + ebx * 4], ebp
 		mov     edx, [edi]
-		mov     eax, [edx + 0x288]
+		mov     eax, [edx + 0x288]	// terrain name
 		push    ebp
 		mov     ecx, edi
 		call    eax
 		push    eax
-		lea     ecx, [esp + 0x24 + 0x24] // var_104 !!BYTE variable needed!! POSSIBLE VALUES: - 0xC, + 0x0
+		lea     ecx, [esp + 0x24 + 0x24] // var_104 !!BYTE variable needed!! POSSIBLE VALUES: - 0xC, + 0x0 CONTAINS mrkr_terrain_name_cmd string
 		push    SOULSTORM_aMrkr_S_cmd
 		push	ecx
 		call    sprintf
-		mov     edx, [esi + 0x160]
-		mov     eax, [esi + 0x0EC]
+		mov     edx, [esi + 0x160] // unknown ID 1
+		mov     eax, [esi + 0x0EC] // unknown register
 		mov     eax, [eax + edx * 4]
 		mov     eax, [eax]
 		add     esp, 0x0C
@@ -57,38 +57,39 @@ jump_2:
 		push    eax
 		push    edx
 		call    SOULSTORM_checkKeyNameInDictionaryFunction
-		mov     ecx, [esp + 0x24 - 0x10] // var_138?var_134?
+		mov     ecx, [esp + 0x24 - 0x10] // var_138
 		call    SOULSTORM_placeModelOnMarker
-		cmp     eax, 0x0FFFFFFFF
+		cmp     eax, 0x0FFFFFFFF // eax contains unit ID?
 		jz      jump_3
 		mov     edx, [esi + 0x160]
-		lea     ecx, [esp + 0x24 - 0x10] // var_134
+		lea     ecx, [esp + 0x24 - 0xC] // var_138
 		push    ecx
-		push    eax
+		push    eax // unit ID?
 		mov     eax, [esi + 0x0EC]
 		mov     ecx, [eax + edx * 4]
 		call    SOULSTORM_placeCommanderModelOnMarkerFunction_1
 		mov     edx, [edi]
-		mov     eax, [edx + 0x0F0]
+		mov     eax, [edx + 0x114] // master
 		push    ebx
 		mov     ecx, edi
-		call    eax
+		call    eax // master?
 		mov     edx, [edi]
 		mov     ebp, eax
-		mov     eax, [edx + 0x0F4]
+		mov     eax, [edx + 0x118]
 		push    ebx
 		mov     ecx, edi
-		call    eax
-		fstp	[esp + 0x24 - 0x14] // var_140
-		fld		[esp + 0x24 - 0x14] // var_140
-		mov     edx, [esi + 0x164]
+		call    eax // 00?
+		sub		esp, 0x08
+		fstp	[esp + 0x24 + 0x14] // var_140
+		fld		[esp + 0x24 + 0x14] // var_140
+		mov     edx, [esi + 0x164] // unknown ID 2
 		push    ecx
 		fstp	[esp] // var_154
-		lea     ecx, [esp + 0x24 - 0x0C] // var_13C
+		lea     ecx, [esp + 0x24 - 0x10] // var_13C
 		push    ecx
-		push    ebp
-		//add     edx, ebx		DISABLED FOR TESTING PURPOSES ONLY
-		push    edx
+		push    ebp // master
+		add     edx, ebx		//DISABLED FOR TESTING PURPOSES ONLY
+		push    edx // unknown ID 2
 		mov     ecx, esi
 		call    SOULSTORM_placeCommanderModelOnMarkerFunction_2
 		pop     edi
@@ -625,6 +626,107 @@ int __declspec(naked) new_PlaceObjectsOnMetamapFunction()
 	__asm
 	{
 	
+		push	return_address
+		ret
+	}
+}
+
+int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop		return_address
+	}
+
+	__asm
+	{
+		mov     ecx, [esi + 0x138]
+		mov     ebx, [esp + 0x24 - 0xC]
+		mov		[ecx + edi * 4], ebx
+		push    edi
+		mov     ecx, esi
+		call    SOULSTORM_placeCommanderIconOnMetamap
+		mov     ecx, [esi + 0x138]
+		mov     ebx, [esp + 0x24 - 0xC]
+		mov		[ecx + edi * 4], ebx
+		mov     edx, [ecx + edi * 4]
+		push    edx
+		push    edi
+		mov     ecx, esi
+		call    displayCommanderModelOnMetamapGFXScreen
+	}
+
+	//restore stack
+	//restore overwritten code
+	__asm
+	{
+
+		push	return_address
+		ret
+	}
+}
+
+int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_1()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop		return_address
+	}
+
+	__asm
+	{
+		mov     edx, [ebx]
+		mov     eax, [edx + 0x12C]
+		mov     ebp, [esi + 0x138]
+		push    edi
+		mov     ecx, ebx
+		call    eax
+		push    edi
+		mov     ecx, esi
+		mov		[ebp + edi * 4], eax
+		call    SOULSTORM_placeCommanderIconOnMetamap
+		
+		mov     edx, [ebx]
+		mov     eax, [edx + 0x12C]
+		cmp		edi, 0x00 // TESTING ONLY
+		jg		skip //TESTING ONLY
+		push    edi
+		mov     ecx, ebx
+		call    eax
+		mov     ebp, [esi + 0x138]
+						 //mov     ecx, eax
+		//mov     ecx, esi
+		//mov		[ebp + edi * 4], eax
+		push    eax
+		mov     edx, [ebx]
+		mov     eax, [edx + 0x270]
+		//push	edi
+		mov     ecx, ebx
+		call    eax
+		mov     ecx, [esi + 0x138]
+		//mov     edx, [ebx]
+		//mov     ebp, eax
+		//mov     eax, [edx + 0x210]
+		//mov		[esp + 0x10], ecx
+		//mov     ecx, edi
+		//call    eax
+		//mov     ecx, [esp + 0x10]
+		push    edi
+		mov     ecx, esi
+		mov		[ebp + edi * 4], eax
+		call	displayCommanderModelOnMetamapGFXScreen
+skip:
+	}
+
+	//restore stack
+	//restore overwritten code
+	__asm
+	{
+
 		push	return_address
 		ret
 	}

@@ -7,6 +7,10 @@ int new_PlaceObjectsOnMetamapFunction();
 
 int new_displayCommanderModelOnMetamapGFXScreen();
 
+int new_placeObjectsOnMetamapOnLoadFunction();
+
+int new_placeObjectsOnMetamapOnLoadFunction_1();
+
 int test_function();
 
 int test_function2();

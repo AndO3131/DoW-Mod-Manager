@@ -52,6 +52,8 @@ Patch* patches[] = {
 	new Patch(Call, SOULSTORM,{ 0x378506, -1 }, (int)new_PlaceObjectsOnMetamapFunction, 17),
 	//new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 38),
 	new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
+	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction, 21),
+	new Patch(Call, SOULSTORM,{ 0x377755, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_1, 31),
 
 	// 0x8F5020 checkKeyNameInDictionaryFunction?
 	// 0x8DDA80 placeModelOnMarker?
