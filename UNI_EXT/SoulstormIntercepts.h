@@ -11,6 +11,10 @@ int new_placeObjectsOnMetamapOnLoadFunction();
 
 int new_placeObjectsOnMetamapOnLoadFunction_1();
 
+int new_placeObjectsOnMetamapOnLoadFunction_2();
+
+//int dark_crusade_placeCommanderModelOnMarkerFunction_2();
+
 int test_function();
 
 int test_function2();

@@ -7,6 +7,269 @@
 //DWORD* base_address;
 DWORD return_address;
 
+int __declspec(naked) dark_crusade_style_placeCommanderModelOnMarkerFunction_2()
+{
+	__asm
+	{
+		sub     esp, 0x64
+		push    ebx
+		push    ebp
+		mov     ebp, [esp + 0x70] // arg_0
+		push    esi
+		push    edi
+		mov     edi, ecx
+		mov     eax, [edi + 0x0EC]
+		mov     ebx, [eax + ebp * 4]
+		mov     eax, [ebx]
+		test    eax, eax
+		mov		[esp + 0x24 - 0x14], edi // var_64
+		jz      jump_1
+		mov     eax, [eax + 0x0C]
+		jmp     jump_2
+jump_1:
+		xor     eax, eax
+jump_2:
+		mov     esi, [eax + 0x10]
+		test    esi, esi
+		jz      jump_3
+		mov     edx, [esp + 0x7C] // arg_4
+		push    ecx
+		mov     ecx, esp
+		push    edx
+		push    ecx
+		call    SOULSTORM_checkKeyNameInDictionaryFunction
+		mov     ecx, esi
+		call    SOULSTORM_sub_8F89F0
+		mov     esi, eax
+		cmp     esi, 0x0FFFFFFFF
+		mov		[esp + 0x7C], esi // arg_4
+		jnz     jump_4
+		mov		DWORD32[esp + 0x7C], 0 // arg_4
+		mov     esi, [esp + 0x7C] // arg_4
+jump_4:
+		fld		[esp + 0x84 + 0x24] // arg_C?
+		push    ecx
+		mov     ecx, ebx
+		_emit	0xD9
+		_emit	0x1C
+		_emit	0x24
+		//fstp	[esp + 0x1C + 0x8] // var_78
+		call    SOULSTORM_sub_8F0CD0
+		fldz
+		push    ecx
+		_emit	0xD9
+		_emit	0x1C
+		_emit	0x24
+		//fstp	[esp + 0x1C + 0x8] // var_78
+		mov     ecx, ebx
+		call	SOULSTORM_sub_8F0C70
+		mov     ecx, ebx
+		call    SOULSTORM_sub_8F0C90
+		imul    ebp, 0x7C
+		mov     eax, [edi + 0x0F8]
+		mov     ecx, [eax + ebp]
+		shr     ecx, 2
+		test    cl, 1
+		lea     edi, [esp + 0x24 - 0x10] // var_60
+		mov     ecx, 0x0C
+		jz      jump_5
+		lea     esi, [eax + ebp + 0x3C]
+		jmp     jump_6
+jump_5:
+		mov     eax, [ebx + 0x14]
+		imul    esi, 0x34
+		add     esi, eax
+jump_6:
+		mov     eax, [esp + 0x80] // arg_8?
+		fld		[eax]
+		rep		movsd
+		fld		[esp + 0x24 - 0x10] // var_60
+		fld     st
+		fmulp   st(2), st
+		fld		[eax + 0x0C]
+		fld		[esp + 0x24 - 0xC] // var_5C
+		fld     st
+		fmulp   st(2), st
+		fxch    st(3)
+		faddp   st(1), st
+		fld		[eax + 0x18]
+		fld		[esp + 0x24 - 0x8] // var_58
+		fld     st
+		fmulp   st(2), st
+		fxch    st(2)
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x20] // var_30
+		fld		[eax + 4]
+		fmul    st, st(2)
+		fld		[eax + 0x10]
+		fmul    st, st(4)
+		faddp   st(1), st
+		fld     st(1)
+		fmul	[eax + 0x1C]
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x24] // var_2C
+		fld		[eax + 8]
+		fmulp   st(2), st
+		fld		[eax + 0x14]
+		fmulp   st(3), st
+		fxch    st(1)
+		faddp   st(2), st
+		fmul	[eax + 0x20]
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x28] // var_28
+		fld     dword ptr[eax]
+		fld		[esp + 0x24 - 0x4] // var_54
+		fld     st
+		fmulp   st(2), st
+		fld		[eax + 0x0C]
+		fld		[esp + 0x24] // var_50
+		fld     st
+		fmulp   st(2), st
+		fxch    st(3)
+		faddp   st(1), st
+		fld		[eax + 0x18]
+		fld		[esp + 0x24 + 0x4] // var_4C
+		fld     st
+		fmulp   st(2), st
+		fxch    st(2)
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x2C] // var_24
+		fld		[eax + 0x10]
+		fmul    st, st(3)
+		fld		[eax + 4]
+		fmul    st, st(3)
+		faddp   st(1), st
+		fld     st(1)
+		fmul	[eax + 0x1C]
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x30] // var_20
+		fld		[eax + 0x14]
+		fmulp   st(3), st
+		fld		[eax + 8]
+		fmulp   st(2), st
+		fxch    st(2)
+		faddp   st(1), st
+		fld		[eax + 0x20]
+		fmulp   st(2), st
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x34] // var_1C
+		fld		[eax]
+		fld		[esp + 0x24 + 0x8] // var_48
+		fld     st
+		fmulp   st(2), st
+		fld		[eax + 0x0C]
+		fld		[esp + 0x24 + 0xC] // var_44
+		fld     st
+		fmulp   st(2), st
+		fxch    st(3)
+		push    ecx
+		faddp   st(1), st
+		mov     ecx, ebx
+		fld		[eax + 0x18]
+		fld		[esp + 0x24 + 0x14] // var_40
+		fld     st
+		fmulp   st(2), st
+		fxch    st(2)
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x3C] // var_18
+		fld		[eax + 0x10]
+		fmul    st, st(3)
+		fld		[eax + 4]
+		fmul    st, st(3)
+		faddp   st(1), st
+		fld     st(1)
+		fmul	[eax + 0x1C]
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x40] // var_14
+		fld		[eax + 0x14]
+		fmulp   st(3), st
+		fld		[eax + 8]
+		fmulp   st(2), st
+		fxch    st(2)
+		faddp   st(1), st
+		fld		[eax + 0x20]
+		fmulp   st(2), st
+		faddp   st(1), st
+		fstp	[esp + 0x24 + 0x44] // var_10
+		fld		[eax]
+		fld		[esp + 0x24 + 0x18] // var_3C
+		fld     st
+		fmulp   st(2), st
+		fld		[eax + 0x0C]
+		fld		[esp + 0x24 + 0x1C] // var_38
+		fld     st
+		fmulp   st(2), st
+		fxch    st(3)
+		faddp   st(1), st
+		fld		[eax + 0x18]
+		fld		[esp + 0x24 + 0x20] // var_34
+		fld     st
+		fmulp   st(2), st
+		fxch    st(2)
+		faddp   st(1), st
+		fadd	[eax + 0x24]
+		fstp	[esp + 0x24 + 0x48] // var_C
+		fld		[eax + 0x10]
+		fmul    st, st(3)
+		fld		[eax + 4]
+		fmul    st, st(3)
+		faddp   st(1), st
+		fld     st(1)
+		fmul	[eax + 0x1C]
+		faddp   st(1), st
+		fadd	[eax + 0x28]
+		fstp	[esp + 0x24 + 0x4C] // var_8
+		fld		[eax + 0x14]
+		fmulp   st(3), st
+		fld		[eax + 8]
+		fmulp   st(2), st
+		fxch    st(2)
+		faddp   st(1), st
+		fld		[eax + 0x20]
+		fmulp   st(2), st
+		faddp   st(1), st
+		fadd	[eax + 0x2C]
+		fstp	[esp + 0x24 + 0x50] // var_4
+		fld1
+		_emit	0xD9
+		_emit	0x1C
+		_emit	0x24
+		//fstp	[esp + 0x1C + 0x8] // var_78
+		call    SOULSTORM_sub_8F0CD0
+		mov     edx, [esp + 0x24 - 0x14] // var_64
+		mov     eax, [edx + 0F8h]
+		mov     ecx, [esp + 0x7C] // arg_4
+		add     eax, ebp
+		or		[eax], 4
+		mov		[eax + 8], ecx
+		lea     edi, [eax + 0x0C]
+		mov     ecx, 0x0C
+		lea     esi, [esp + 0x24 + 0x20] // var_30
+		fldz
+		rep		movsd
+		lea     edi, [eax + 0x3C]
+		mov     eax, [esp + 0x78] // arg_0
+		mov     ecx, 0x0C
+		lea     esi, [esp + 0x24 - 0x10] // var_60
+		rep		movsd
+		push    ecx
+		mov     ecx, edx
+		_emit	0xD9
+		_emit	0x1C
+		_emit	0x24
+		//fstp	[esp + 0x1C + 0x8] // var_78
+		push    eax
+		call    SOULSTORM_sub_77B400
+jump_3:
+		pop     edi
+		pop     esi
+		pop     ebp
+		pop     ebx
+		add     esp, 0x64
+		retn    0x10
+	}
+}
+
 int __declspec(naked) placeCommanderModelOnMarker(int, int)
 {
 	__asm
@@ -14,10 +277,10 @@ int __declspec(naked) placeCommanderModelOnMarker(int, int)
 		
 		sub     esp, 0x134
 		
-		push    ebx // liczba
-		push    ebp // liczba
-		push    esi // wskaŸnik na adres pamiêci
-		push    edi // liczba
+		push    ebx // number
+		push    ebp // number in DC - pointer to memory address in SS
+		push    esi // pointer to memory addres
+		push    edi // number
 		
 		mov     esi, ecx
 	    call    SOULSTORM_sub_96EAA0
@@ -29,12 +292,12 @@ int __declspec(naked) placeCommanderModelOnMarker(int, int)
 		mov     eax, [esi + 0x138]
 		mov		[eax + ebx * 4], ebp
 		mov     edx, [edi]
-		mov     eax, [edx + 0x288]	// terrain name
+		mov     eax, [edx + 0x288] // terrain name pointer
 		push    ebp
 		mov     ecx, edi
-		call    eax
+		call    eax // terrain name string
 		push    eax
-		lea     ecx, [esp + 0x24 + 0x24] // var_104 !!BYTE variable needed!! POSSIBLE VALUES: - 0xC, + 0x0 CONTAINS mrkr_terrain_name_cmd string
+		lea     ecx, [esp + 0x24 + 0x24] // var_104 mrkr_terrainName_cmd string
 		push    SOULSTORM_aMrkr_S_cmd
 		push	ecx
 		call    sprintf
@@ -49,11 +312,11 @@ int __declspec(naked) placeCommanderModelOnMarker(int, int)
 		mov		[esp + 0x24 - 0x14], ecx // var_138
 		jmp     jump_2
 jump_1: 
-		mov		[esp + 0x24 - 0x14], 0 // var_138
+		mov		DWORD32[esp + 0x24 - 0x14], 0 // var_138
 jump_2:
 		push    ecx
 		mov     edx, esp
-		lea     eax, [esp + 0x24 + 0x24] // var_104
+		lea     eax, [esp + 0x24 + 0x24] // var_104 mrkr_terrainName_cmd string
 		push    eax
 		push    edx
 		call    SOULSTORM_checkKeyNameInDictionaryFunction
@@ -62,36 +325,37 @@ jump_2:
 		cmp     eax, 0x0FFFFFFFF // eax contains unit ID?
 		jz      jump_3
 		mov     edx, [esi + 0x160]
-		lea     ecx, [esp + 0x24 - 0xC] // var_138
+		lea     ecx, [esp + 0x24 - 0x10] // var_138 address
 		push    ecx
 		push    eax // unit ID?
 		mov     eax, [esi + 0x0EC]
 		mov     ecx, [eax + edx * 4]
 		call    SOULSTORM_placeCommanderModelOnMarkerFunction_1
 		mov     edx, [edi]
-		mov     eax, [edx + 0x114] // master
+		mov     eax, [edx + 0x114] // ArmyModelBone string pointer
 		push    ebx
 		mov     ecx, edi
-		call    eax // master?
+		call    eax // ArmyModelBone string
 		mov     edx, [edi]
 		mov     ebp, eax
-		mov     eax, [edx + 0x118]
+		mov     eax, [edx + 0xF4] // unknown pointer
 		push    ebx
 		mov     ecx, edi
-		call    eax // 00?
-		sub		esp, 0x08
-		fstp	[esp + 0x24 + 0x14] // var_140
-		fld		[esp + 0x24 + 0x14] // var_140
-		mov     edx, [esi + 0x164] // unknown ID 2
+		call    eax // 00 value?
+		//sub		esp, 0x08
+		fstp	[esp + 0x24 - 0x14] // var_138
+		fld		[esp + 0x24 - 0x14] // var_138
+		mov     edx, [esi + 0x164] // unknown ID 2 unitID?
 		push    ecx
 		fstp	[esp] // var_154
-		lea     ecx, [esp + 0x24 - 0x10] // var_13C
+		lea     ecx, [esp + 0x24 - 0xC] // var_13C
 		push    ecx
 		push    ebp // master
-		add     edx, ebx		//DISABLED FOR TESTING PURPOSES ONLY
-		push    edx // unknown ID 2
+		//add     edx, ebx		//DISABLE FOR TESTING PURPOSES
+		push    edx // unknown ID 2 unitID?
 		mov     ecx, esi
-		call    SOULSTORM_placeCommanderModelOnMarkerFunction_2
+		//call	SOULSTORM_placeCommanderModelOnMarkerFunction_2
+		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2
 		pop     edi
 		pop     esi
 		pop     ebp
@@ -137,12 +401,12 @@ int __declspec(naked) displayCommanderModelOnMetamapGFXScreen(int, int)
 		call    SOULSTORM_sub_96F440
 		mov     edx, [eax]
 		mov     ebx, [esi + 0x138]
-		mov     edi, [esp + 0x24 - 0xC] // arg_0
+		mov     edi, [esp + 0x24 - 0xC] // arg_0 raceID
 		mov     ecx, eax
 		mov     eax, [edx + 0x270]
 		call    eax
 		cmp		[ebx + edi * 4], eax
-		mov     ebx, [esp + 0x24 - 0x8] // arg_4
+		mov     ebx, [esp + 0x24 - 0x8] // arg_4 terrainID
 		push    ebx
 		mov     ecx, esi
 		push    edi
@@ -168,7 +432,7 @@ jump_4:
 		test    eax, eax
 		jz      jump_5
 		push    ebp
-		mov     ebp, [esp + 0x24 - 0x14] // var_4?
+		mov     ebp, [esp + 0x24 - 0x14] // var_4
 		mov		[eax], ebp
 		mov		[eax + 4], edx
 		pop     ebp		
@@ -188,7 +452,7 @@ jump_6:
 		push    1
 		lea     edx, [esp + 0x24 + 0x4]
 		push    edx
-		lea     edx, [esp + 0x24 - 0xC] // arg_0?
+		lea     edx, [esp + 0x24 - 0xC] // arg_0 raceID
 		push    edx
 		push    eax
 		call    SOULSTORM_displayCommanderModelOnMetamapGFXScreenFunction_1
@@ -680,6 +944,42 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_1()
 	__asm
 	{
 		mov     edx, [ebx]
+		mov     eax, [edx + 0x12C] // terrainID offset?
+		//cmp		edi, 0x00 // TESTING ONLY
+		//jg		skip //TESTING ONLY
+		push    edi
+		mov     ecx, ebx
+		call    eax
+		mov		[esp + 0x10], eax
+		mov     ebp, [esi + 0x138]
+						 //mov     ecx, eax
+		//mov     ecx, esi
+		//mov		[ebp + edi * 4], eax
+		//mov     ebp, eax
+
+		mov     edx, [ebx]
+		mov     eax, [edx + 0x270]
+		//push	edi
+		mov     ecx, ebx
+		call    eax
+		mov     ecx, [esp + 0x10]
+		push	ecx // terrainID
+
+		//mov     ebp, [esi + 0x138]
+		//mov     edx, [ebx]
+		//mov     ebp, eax
+		//mov     eax, [edx + 0x210]
+		//mov		[esp + 0x10], ecx
+		//mov     ecx, edi
+		//call    eax
+		//mov     ecx, [esp + 0x10]
+
+		push    edi // raceID
+		mov     ecx, esi
+		mov		[ebp + edi * 4], eax
+		call	displayCommanderModelOnMetamapGFXScreen
+skip :
+		mov     edx, [ebx]
 		mov     eax, [edx + 0x12C]
 		mov     ebp, [esi + 0x138]
 		push    edi
@@ -689,25 +989,40 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_1()
 		mov     ecx, esi
 		mov		[ebp + edi * 4], eax
 		call    SOULSTORM_placeCommanderIconOnMetamap
-		
-		mov     edx, [ebx]
-		mov     eax, [edx + 0x12C]
+	}
+
+	//restore stack
+	//restore overwritten code
+	__asm
+	{
+
+		push	return_address
+		ret
+	}
+}
+
+int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_2()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop		return_address
+	}
+
+	__asm
+	{
+		mov     ecx, [esi + 0x138]
+		mov     ebx, [esp + 0x24 - 0x8]
+		mov		[ecx + edi * 4], ebx
+		mov     eax, [edx + 0x12C] // terrainID
 		cmp		edi, 0x00 // TESTING ONLY
 		jg		skip //TESTING ONLY
 		push    edi
 		mov     ecx, ebx
 		call    eax
-		mov     ebp, [esi + 0x138]
-						 //mov     ecx, eax
-		//mov     ecx, esi
-		//mov		[ebp + edi * 4], eax
-		push    eax
-		mov     edx, [ebx]
-		mov     eax, [edx + 0x270]
-		//push	edi
-		mov     ecx, ebx
-		call    eax
-		mov     ecx, [esi + 0x138]
+		push	eax
+		//mov     ebp, [esi + 0x138]
 		//mov     edx, [ebx]
 		//mov     ebp, eax
 		//mov     eax, [edx + 0x210]
@@ -717,9 +1032,13 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_1()
 		//mov     ecx, [esp + 0x10]
 		push    edi
 		mov     ecx, esi
-		mov		[ebp + edi * 4], eax
+		//mov		[ecx + edi * 4], ebx
 		call	displayCommanderModelOnMetamapGFXScreen
-skip:
+skip :
+		push    edi
+		mov     ecx, esi
+		call    SOULSTORM_placeCommanderIconOnMetamap
+
 	}
 
 	//restore stack
@@ -785,6 +1104,7 @@ int __declspec(naked) test_function()
 		ret
 	}
 }
+
 
 // funciton that disables stuff in load game screen
 int __declspec(naked) test_function2()
