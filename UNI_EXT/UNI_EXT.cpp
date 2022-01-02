@@ -54,7 +54,8 @@ Patch* patches[] = {
 	new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
 	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction, 21),
 	new Patch(Call, SOULSTORM,{ 0x377755, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_1, 31),
-	new Patch(Call, SOULSTORM,{ 0x3782AF, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 33),
+	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 21),
+	//new Patch(Call, SOULSTORM,{ 0x3782AF, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 33),
 	//new Patch(Call, SOULSTORM,{ 0x37B883, -1 }, (int)dark_crusade_placeCommanderModelOnMarkerFunction_2, 25),
 	//REWRITE THIS FUNCTION FROM DARK CRUSADE CODE
 	//new Patch(Overwrite, SOULSTORM,{ 0x37B883, -1 },{ 0x53, 0x55, 0x8B, 0x6C, 0x24, 0x70, 0x56, 0x57, 0x8B, 0xF9, 0x8B, 0x87, 0xEC, 0x00, 0x00, 0x00, 0x8B, 0x1C, 0xA8, 0x90 }, 20),
