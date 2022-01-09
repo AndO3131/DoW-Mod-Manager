@@ -15,6 +15,8 @@ int new_placeObjectsOnMetamapOnLoadFunction_2();
 
 //int dark_crusade_placeCommanderModelOnMarkerFunction_2();
 
+int new_NewCampaignGameStartFunction_1();
+
 int test_function();
 
 int test_function2();
