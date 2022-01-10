@@ -440,8 +440,8 @@ jump_2:
 		//add     edx, ebx		//DISABLE FOR TESTING PURPOSES
 		push    edx // unknown ID 2 unitID?
 		mov     ecx, esi
-		call	SOULSTORM_placeCommanderModelOnMarkerFunction_2
-		//call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2
+		//call	SOULSTORM_placeCommanderModelOnMarkerFunction_2
+		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2
 		pop     edi
 		pop     esi
 		pop     ebp
@@ -504,13 +504,11 @@ int __declspec(naked) displayCommanderModelOnMetamapGFXScreen(int, int) // (race
 		pop     edi
 		pop     esi
 		pop     ebx
-		//pop		ebp
 		add     esp, 8
 		retn    8
 jump_4:
 		call    displayCommanderModelOnMetamapGFXScreenFunction_2
 		fstp	[esp + 0x24 - 0x14] // var_8
-		//add		esp, 0x8
 		mov     eax, [esi + 0x184]
 		cmp     eax, [esi + 0x188]
 		lea     ecx, [esi + 0x180]
@@ -531,7 +529,6 @@ jump_5:
 		pop     edi
 		pop     esi
 		pop     ebx
-		//pop		ebp
 		add     esp, 8
 		retn    8
 	
@@ -549,32 +546,11 @@ jump_6:
 		pop     edi
 		pop     esi
 		pop     ebx
-		//pop		ebp
 		add     esp, 8
 		retn    8
 	}
 }
 
-/*
-int __declspec(naked) Metamap_Action_Selector_Function()
-{
-	__asm
-	{
-		push offset AD3A84;
-		call sub_66DE90;
-		call sub_777BD0;
-//		pushad;
-//		call GameLoop;
-//		popad;
-
-//		pop eax;
-//		sub esp, 0x20;
-//		mov[esp + 0xC], ecx;
-//		push eax;
-//		ret;
-	}
-}
-*/
 int __stdcall runAction(int)
 {
 	/*
@@ -600,17 +576,6 @@ int __stdcall runAction(int)
 	
 	__asm
 	{
-		//push    ebp
-		/*
-		push    0x0FFFFFFFF
-		push    SOULSTORM_FrameHandler3Jump
-		mov     eax, fs : 0
-		push    eax
-		mov     fs : 0, esp
-		sub     esp, 0x50
-		*/
-
-		
 		push    ebx
 		push    ebp
 		push    esi
@@ -669,22 +634,10 @@ int __stdcall runAction(int)
 		mov     ecx, esi
 		call    SOULSTORM_sub_787020
 
-		//pop    ebp
-		//pop esi
-		//retn 4
-		/*
-		mov     fs : 0, ecx
-		add     esp, 0x5C
-		*/
 		pop     edi
 		pop     esi
 		pop     ebp
-		//mov     large fs : 0, ecx
 		pop     ebx
-		//add     esp, 0x50
-		//retn    4
-		
-
 	}
 	/*
 	// setOverlayEnabledFunction function
@@ -874,6 +827,7 @@ int __stdcall definitionButtonToggleArmyClicked(int)
 	
 }
 
+/*
 int __stdcall prepareAction(int)
 {
 	__asm
@@ -886,6 +840,7 @@ int __stdcall prepareAction(int)
 		//sub		esp, 0x4
 	}
 }
+*/
 
 int __declspec(naked) new_BindButtonClickedEntry_Function()
 {
@@ -894,11 +849,6 @@ int __declspec(naked) new_BindButtonClickedEntry_Function()
 	__asm
 	{
 		pop		return_address
-		//push    SOULSTORM_aOnsidebarexite
-		//mov     ecx, edi
-		//call    ebx
-
-		//pushad
 	}
 
 	__asm
@@ -952,8 +902,7 @@ int __declspec(naked) new_PlaceObjectsOnMetamapFunction()
 	// save stack
 	__asm
 	{
-		pop		return_address
-		
+		pop		return_address	
 	}
 
 	__asm
