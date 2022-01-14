@@ -7,6 +7,275 @@
 //DWORD* base_address;
 DWORD return_address;
 
+int __declspec(naked) placeCommanderModelOnMarkerSubfunction_3()
+{
+	__asm
+	{
+		push    esi
+		mov     esi, ecx
+		mov     ecx, [esi + 0x10]
+		test    ecx, ecx
+		push    edi
+		jz      jump_1
+		call    SOULSTORM_sub_8F8980
+jump_1:
+		mov     ecx, [esi + 0x24]
+		sub     ecx, [esi + 0x20]
+		mov     edi, [esp + 0x24 - 0x18]
+		mov     eax, 0x88888889
+		imul    ecx
+		add     edx, ecx
+		sar     edx, 5
+		mov     eax, edx
+		shr     eax, 0x1F
+		add     eax, edx
+		cmp     edi, eax
+		jnb		jump_2
+		mov     edx, [esi + 0x20]
+		mov     ecx, edi
+		shl     ecx, 4
+		sub     ecx, edi
+		mov     eax, [edx + ecx * 4 + 0x38]
+		pop     edi
+		pop     esi
+		retn    4
+jump_2:
+		mov     ecx, [esi + 0x24]
+		sub     ecx, [esi + 0x20]
+		mov     eax, 0x88888889
+		imul    ecx
+		add     edx, ecx
+		sar     edx, 5
+		mov     eax, edx
+		shr     eax, 0x1F
+		add     eax, edx
+		mov     ecx, eax
+		mov     eax, edi
+		pop     edi
+		sub     eax, ecx
+		pop     esi
+		retn    4
+	}
+}
+
+int __declspec(naked) dark_crusade_style_placeCommanderModelOnMarkerFunction_1()
+{
+	__asm
+	{
+		sub     esp, 0x30
+		push    esi
+		mov     esi, ecx
+		mov     eax, [esi]
+		test    eax, eax
+		push    edi
+		jz      jump_1
+		mov     ecx, [eax + 0x0C]
+		jmp     jump_2
+jump_1:
+		xor     ecx, ecx
+jump_2:
+		call    SOULSTORM_sub_8DD580
+		mov     eax, [esi]
+		test    eax, eax
+		jz      jump_3
+		mov     ecx, [eax + 0x0C]
+		jmp     jump_4
+jump_3:
+		xor     ecx, ecx
+jump_4:
+		mov     edi, [esp + 0x24 + 0x1C]
+		push    ebx
+		mov     ebx, [esp + 0x24 + 0x1C]
+		push    edi
+		push    ebx
+		call    SOULSTORM_sub_8DDE60
+		mov     eax, [esi]
+		test    eax, eax
+		jz      jump_5
+		mov     eax, [eax + 0x0C]
+		jmp     jump_6
+jump_5:
+		xor     eax, eax
+jump_6:
+		push    ebx
+		mov     ecx, eax
+		call    placeCommanderModelOnMarkerSubfunction_3
+		mov		eax, 0 //TESTING ONLY
+		cmp     eax, 0x0FFFFFFFF
+		pop     ebx
+		jz      jump_7
+		fld     dword ptr[edi]
+		imul    eax, 0x34
+		add     eax, [esi + 0x14]
+		fmul    dword ptr[eax]
+		fld     dword ptr[eax + 0x0C]
+		fmul    dword ptr[edi + 4]
+		faddp   st(1), st
+		fld     dword ptr[eax + 0x18]
+		fmul    dword ptr[edi + 8]
+		faddp   st(1), st
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x08
+		//fstp	[esp + 0x24 - 0x1C]
+		fld     dword ptr[eax + 4]
+		fmul    dword ptr[edi]
+		fld     dword ptr[eax + 0x10]
+		fmul    dword ptr[edi + 4]
+		faddp   st(1), st
+		fld     dword ptr[eax + 0x1C]
+		fmul    dword ptr[edi + 8]
+		faddp   st(1), st
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x0C
+		//fstp	[esp + 0x24 - 0x18]
+		fld     dword ptr[eax + 0x14]
+		fmul    dword ptr[edi + 4]
+		fld     dword ptr[eax + 8]
+		fmul    dword ptr[edi]
+		faddp   st(1), st
+		fld     dword ptr[eax + 0x20]
+		fmul    dword ptr[edi + 8]
+		faddp   st(1), st
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x10
+		//fstp	[esp + 0x24 - 0x14]
+		fld     dword ptr[edi + 0x0C]
+		fmul    dword ptr[eax]
+		fld     dword ptr[eax + 0x0C]
+		fmul    dword ptr[edi + 0x10]
+		faddp   st(1), st
+		fld     dword ptr[edi + 0x14]
+		fmul    dword ptr[eax + 0x18]
+		faddp   st(1), st
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x14
+		//fstp	[esp + 0x24 - 0x10]
+		fld     dword ptr[eax + 4]
+		fmul    dword ptr[edi + 0x0C]
+		fld     dword ptr[eax + 0x10]
+		fmul    dword ptr[edi + 0x10]
+		faddp   st(1), st
+		fld     dword ptr[eax + 0x1C]
+		fmul    dword ptr[edi + 0x14]
+		faddp   st(1), st
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x18
+		//fstp	[esp + 0x24 - 0xC]
+		fld     dword ptr[eax + 0x14]
+		fmul    dword ptr[edi + 0x10]
+		fld     dword ptr[eax + 8]
+		fmul    dword ptr[edi + 0x0C]
+		faddp   st(1), st
+		fld     dword ptr[edi + 0x14]
+		fmul    dword ptr[eax + 0x20]
+		faddp   st(1), st
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x1C
+		//fstp	[esp + 0x24 - 0x8]
+		fld     dword ptr[edi + 0x18]
+		fmul    dword ptr[eax]
+		fld     dword ptr[edi + 0x1C]
+		fmul    dword ptr[eax + 0x0C]
+		faddp   st(1), st
+		fld     dword ptr[eax + 0x18]
+		fmul    dword ptr[edi + 0x20]
+		faddp   st(1), st
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x20
+		//fstp	[esp + 0x24 - 0x4]
+		fld     dword ptr[edi + 0x1C]
+		fmul    dword ptr[eax + 0x10]
+		fld     dword ptr[edi + 0x18]
+		fmul    dword ptr[eax + 4]
+		faddp   st(1), st
+		fld     dword ptr[eax + 0x1C]
+		fmul    dword ptr[edi + 0x20]
+		faddp   st(1), st
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x24
+		//fstp	[esp + 0x24]
+		fld     dword ptr[eax + 0x14]
+		fmul    dword ptr[edi + 0x1C]
+		fld     dword ptr[eax + 8]
+		fmul    dword ptr[edi + 0x18]
+		faddp   st(1), st
+		fld     dword ptr[eax + 0x20]
+		fmul    dword ptr[edi + 0x20]
+		faddp   st(1), st
+		mov     ecx, 0Ch
+		lea     esi, [esp + 0x24 - 0x1C]
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x28
+		//fstp	[esp + 0x24 + 0x4]
+		fld     dword ptr[edi + 0x24]
+		fmul    dword ptr[eax]
+		fld     dword ptr[eax + 0x0C]
+		fmul    dword ptr[edi + 0x28]
+		faddp   st(1), st
+		fld     dword ptr[edi + 0x2C]
+		fmul    dword ptr[eax + 0x18]
+		faddp   st(1), st
+		fadd    dword ptr[eax + 0x24]
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x2C
+		//fstp	[esp + 0x24 + 0x8]
+		fld     dword ptr[eax + 4]
+		fmul    dword ptr[edi + 0x24]
+		fld     dword ptr[eax + 0x10]
+		fmul    dword ptr[edi + 0x28]
+		faddp   st(1), st
+		fld     dword ptr[eax + 0x1C]
+		fmul    dword ptr[edi + 0x2C]
+		faddp   st(1), st
+		fadd    dword ptr[eax + 0x28]
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x30
+		//fstp	[esp + 0x24 + 0xC]
+		fld     dword ptr[eax + 0x14]
+		fmul    dword ptr[edi + 0x28]
+		fld     dword ptr[eax + 8]
+		fmul    dword ptr[edi + 0x24]
+		faddp   st(1), st
+		fld     dword ptr[edi + 0x2C]
+		fmul    dword ptr[eax + 0x20]
+		faddp   st(1), st
+		fadd    dword ptr[eax + 0x2C]
+		_emit	0xD9
+		_emit	0x5C
+		_emit	0x24
+		_emit	0x34
+		//fstp	[esp + 0x24 + 0x10]
+		rep		movsd		
+jump_7:
+		pop     edi
+		pop     esi
+		add     esp, 0x30
+		retn    8
+	}
+}
+
 int __declspec(naked) displayCommanderModelOnMetamapGFXScreenFunction_2()
 {
 	__asm
@@ -78,7 +347,7 @@ jump_1:
 		push	SOULSTORM_atau_cannon_vyasastan
 		push    edx
 		mov     ecx, ebp
-		call    SOULSTORM_displayCommanderModelOnMetamapGFXScreenSubfunction_3
+		call    SOULSTORM_displayFXeffectOnMetamapGFXScreenFunction
 		mov     eax, [esi]
 		mov     edx, [eax + 0x1D8]
 		push    edi
@@ -385,38 +654,38 @@ int __declspec(naked) placeCommanderModelOnMarker(int, int) // (raceID, terrainI
 		lea     ecx, [esp + 0x24 + 0x24] // var_104 mrkr_terrainName_cmd string
 		push    SOULSTORM_aMrkr_S_cmd
 		push	ecx // buffer pointer
-		call    sprintf
+		call    sprintf // (buffer pointer, mrkr_%s_cmd string, terrain name string) returns mrkr_terrainName_cmd string into buffer pointer
 		mov     edx, [esi + 0x160] // number of terrains on metamap
 		mov     eax, [esi + 0x0EC] // unknown register
-		mov     eax, [eax + edx * 4]
-		mov     eax, [eax] // POSSIBLY pointer to metamap model?
+		mov     eax, [eax + edx * 4] // pointer to metamap_menu.whm model
+		mov     eax, [eax]
 		add     esp, 0x0C
 		test    eax, eax
 		jz      jump_1
 		mov     ecx, [eax + 0x0C]
-		mov		[esp + 0x24 - 0x14], ecx // var_138
+		mov		[esp + 0x24 - 0x14], ecx // var_138 pointer to DATAMARK section in metamap_menu.whm model
 		jmp     jump_2
 jump_1: 
 		mov		DWORD32[esp + 0x24 - 0x14], 0 // var_138
 jump_2:
-		push    ecx // 
+		push    ecx // pointer to metamap_menu.whm model
 		mov     edx, esp
 		lea     eax, [esp + 0x24 + 0x24] // var_104 mrkr_terrainName_cmd string buffer pointer
 		push    eax
 		push    edx // return address?
 		call    SOULSTORM_checkKeyNameInDictionaryFunction // ( return address?, mrkr_terrainName_cmd) returns edx address
-		mov     ecx, [esp + 0x24 - 0x10] // var_138
-		call    SOULSTORM_placeModelOnMarker // ( XXXXXX )
-		//mov     eax, 0x8E // TESTING ONLY
-		cmp     eax, 0x0FFFFFFFF // eax contains unit ID?
+		mov     ecx, [esp + 0x24 - 0x10] // var_138 pointer to DATAMARK section in metamap_menu.whm model
+		call    SOULSTORM_placeModelOnMarker // ( pointer to metamap_menu.whm model ) returns DATAMARK id in metamap_menu.whm file, based on mrkr_terrainName_cmd name - 'masters of the universe' marker is not counted
+		cmp     eax, 0x0FFFFFFFF // DATAMARK id
 		jz      jump_3
-		mov     edx, [esi + 0x160] // number of terrains on metamap?
-		lea     ecx, [esp + 0x24 - 0x10] // var_138 address
+		mov     edx, [esi + 0x160] // number of terrains on metamap
+		lea     ecx, [esp + 0x24 - 0x10] // var_138 pointer to DATAMARK section in metamap_menu.whm model
 		push    ecx
-		push    eax // unit ID?
-		mov     eax, [esi + 0x0EC] // returned by SOULSTORM_placeModelOnMarker  
+		push    eax // DATAMARK id
+		mov     eax, [esi + 0x0EC]
 		mov     ecx, [eax + edx * 4]
-		call    SOULSTORM_placeCommanderModelOnMarkerFunction_1
+		//call    SOULSTORM_placeCommanderModelOnMarkerFunction_1
+		call	dark_crusade_style_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, pointer to DATAMARK section in metamap_menu.whm model) returns ?
 		mov     edx, [edi]
 		mov     eax, [edx + 0x114] // ArmyModelBone string pointer
 		push    ebx
@@ -459,7 +728,7 @@ jump_3:
 		push    eax
 		push    SOULSTORM_aMarkerSMissing;
 		push    SOULSTORM_loc_415254
-		call    DEBUG_dbWarningfAux
+		call    DEBUG_dbWarningfAux // writes message into artmessages.txt about missing marker mrkr_terrainName_cmd
 		add     esp, 0x10
 		pop     edi
 		pop     esi
@@ -496,8 +765,8 @@ int __declspec(naked) displayCommanderModelOnMetamapGFXScreen(int, int) // (race
 		push    ebx // terrainID
 		mov     ecx, esi
 		push    edi // raceID
-		//jnz     jump_4
-		jmp		jump_4
+		jnz     jump_4
+		//jmp		jump_4
 		call    placeCommanderModelOnMarker // (raceID, terrainID)
 		mov     ecx, [esi + 0x138]
 		mov		[ecx + edi * 4], ebx
@@ -507,7 +776,7 @@ int __declspec(naked) displayCommanderModelOnMetamapGFXScreen(int, int) // (race
 		add     esp, 8
 		retn    8
 jump_4:
-		call    displayCommanderModelOnMetamapGFXScreenFunction_2
+		call    displayCommanderModelOnMetamapGFXScreenFunction_2 // (raceID, terrainID) modified to display tau canoon FX effect
 		fstp	[esp + 0x24 - 0x14] // var_8
 		mov     eax, [esi + 0x184]
 		cmp     eax, [esi + 0x188]
@@ -1046,7 +1315,7 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_2()
 		call    SOULSTORM_sub_96F440
 		mov		ebx, eax
 		mov     edx, [ebx]
-		mov     eax, [edx + 0x12C] // terrainID offset?
+		mov     eax, [edx + 0x12C] // terrainID offset
 		push    edi
 		mov     ecx, esi
 		call    eax
@@ -1058,20 +1327,20 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_2()
 		push    edi
 		mov     ecx, ebx
 		call    eax
-		mov     ecx, [esp + 0x14]
+		mov     ecx, [esp + 0x18]
 		push	ecx // terrainID
 		mov     ecx, [esi + 0x138]
 		mov		[ecx + edi * 4], eax
-		push    edi
+		push    edi // raceID
 		mov     ecx, esi
-		call	displayCommanderModelOnMetamapGFXScreen
+		call	displayCommanderModelOnMetamapGFXScreen // (raceID, terrainID)
 skip:
 		mov     ecx, [esi + 0x138]
 		mov     ebx, [esp + 0x24 - 0x8]
 		mov		[ecx + edi * 4], ebx
 		push    edi
 		mov     ecx, esi
-		call    SOULSTORM_placeCommanderIconOnMetamap
+		call    SOULSTORM_placeCommanderIconOnMetamap // (terrainID)
 	}
 
 	//restore stack

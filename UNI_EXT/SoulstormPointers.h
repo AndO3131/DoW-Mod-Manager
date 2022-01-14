@@ -135,8 +135,11 @@ FUNCPTR(SOULSTORM, sub_8F0C70, int __stdcall, (int), 0x4F0C70, -1)
 FUNCPTR(SOULSTORM, sub_8F0C90, int __stdcall, (void), 0x4F0C90, -1)
 FUNCPTR(SOULSTORM, sub_77B400, int __stdcall, (int, int), 0x37B400, -1)
 FUNCPTR(SOULSTORM, NewCampaignGameStartFunction_1, int __stdcall, (int), 0x38FBD0, -1)
-FUNCPTR(SOULSTORM, displayCommanderModelOnMetamapGFXScreenSubfunction_3, int __stdcall, (int, int), 0x37DFC0, -1)
+FUNCPTR(SOULSTORM, displayFXeffectOnMetamapGFXScreenFunction, int __stdcall, (int, int), 0x37DFC0, -1)
 FUNCPTR(SOULSTORM, placeCommanderIconOnMetamap, int __stdcall, (int), 0x3773A0, -1)
+FUNCPTR(SOULSTORM, sub_8DD580, int, (void), 0x4DD580, -1)
+FUNCPTR(SOULSTORM, sub_8DDE60, int __stdcall, (int, int), 0x4DDE60, -1)
+FUNCPTR(SOULSTORM, sub_8F8980, int, (void), 0x4F8980, -1)
 
 FUNCPTR(SOULSTORM, displayCommanderModelOnMetamapGFXScreenFunction_1, int __stdcall, (int, int, int, int, char), 0x2884C0, -1)
 
