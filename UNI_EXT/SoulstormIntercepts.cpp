@@ -100,7 +100,7 @@ jump_6:
 		push    ebx
 		mov     ecx, eax
 		call    placeCommanderModelOnMarkerSubfunction_3
-		mov		eax, 0 //TESTING ONLY
+		//mov		eax, 0 //TESTING ONLY
 		cmp     eax, 0x0FFFFFFFF
 		pop     ebx
 		jz      jump_7
@@ -677,15 +677,16 @@ jump_2:
 		mov     ecx, [esp + 0x24 - 0x10] // var_138 pointer to DATAMARK section in metamap_menu.whm model
 		call    SOULSTORM_placeModelOnMarker // ( pointer to metamap_menu.whm model ) returns DATAMARK id in metamap_menu.whm file, based on mrkr_terrainName_cmd name - 'masters of the universe' marker is not counted
 		cmp     eax, 0x0FFFFFFFF // DATAMARK id
+		//add		eax, 1 // account for 'masters of the universe' marker presence
 		jz      jump_3
 		mov     edx, [esi + 0x160] // number of terrains on metamap
-		lea     ecx, [esp + 0x24 - 0x10] // var_138 pointer to DATAMARK section in metamap_menu.whm model
-		push    ecx
+		lea     ecx, [esp + 0x24 - 0x10] // var_134 pointer to variable
+		push    ecx // var_134 pointer to variable
 		push    eax // DATAMARK id
 		mov     eax, [esi + 0x0EC]
 		mov     ecx, [eax + edx * 4]
-		//call    SOULSTORM_placeCommanderModelOnMarkerFunction_1
-		call	dark_crusade_style_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, pointer to DATAMARK section in metamap_menu.whm model) returns ?
+		call    SOULSTORM_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model
+		//call	dark_crusade_style_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model
 		mov     edx, [edi]
 		mov     eax, [edx + 0x114] // ArmyModelBone string pointer
 		push    ebx
@@ -693,24 +694,24 @@ jump_2:
 		call    eax // ArmyModelBone string
 		mov     edx, [edi]
 		mov     ebp, eax
-		mov     eax, [edx + 0x118] // unknown pointer
+		mov     eax, [edx + 0x118] // raceID
 		push    ebx
 		mov     ecx, edi
 		call    eax // 00 value?
 		sub		esp, 0x08
-		fstp	[esp + 0x24 - 0x14] // var_138
-		fld		[esp + 0x24 - 0x14] // var_138
-		mov     edx, [esi + 0x164] // unknown ID 2 unitID?
+		fstp	[esp + 0x24 - 0x14] // var_138 modified
+		fld		[esp + 0x24 - 0x14] // ?
+		mov     edx, [esi + 0x164] // pointer to raceID
 		push    ecx
 		fstp	[esp] // var_154
-		lea     ecx, [esp + 0x24 - 0xC] // var_13C
-		push    ecx
+		lea     ecx, [esp + 0x24 - 0xC] // var_134 DATAMARK id data start
+		push    ecx // var_134 DATAMARK id data start
 		push    ebp // master
 		//add     edx, ebx		//DISABLE FOR TESTING PURPOSES
 		push    edx // unknown ID 2 unitID?
 		mov     ecx, esi
 		//call	SOULSTORM_placeCommanderModelOnMarkerFunction_2
-		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2
+		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( pointer to raceID?, ArmyModelBone string, var_134 DATAMARK id data start )
 		pop     edi
 		pop     esi
 		pop     ebp
