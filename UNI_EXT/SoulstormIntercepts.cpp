@@ -378,7 +378,7 @@ int __declspec(naked) dark_crusade_style_placeCommanderModelOnMarkerFunction_2()
 		test    eax, eax
 		mov		[esp + 0x24 - 0x14], edi // var_64
 		jz      jump_1
-		mov     eax, [eax + 0x0C]
+		mov     eax, [eax + 0x0C] // pointer to DATAMARK section in metamap_menu.whm model?
 		jmp     jump_2
 jump_1:
 		xor     eax, eax
@@ -395,13 +395,14 @@ jump_2:
 		mov     ecx, esi
 		call    SOULSTORM_sub_8F89F0
 		mov     esi, eax
+		mov		esi, 1 // TESTING ONLY
 		cmp     esi, 0x0FFFFFFFF
 		mov		[esp + 0x7C], esi // arg_4
 		jnz     jump_4
 		mov		DWORD32[esp + 0x7C], 0 // arg_4
 		mov     esi, [esp + 0x7C] // arg_4
 jump_4:
-		fld		[esp + 0x84 + 0x24] // arg_C?
+		fld		[esp + 0x84] // arg_C?
 		push    ecx
 		mov     ecx, ebx
 		_emit	0xD9
@@ -420,6 +421,7 @@ jump_4:
 		mov     ecx, ebx
 		call    SOULSTORM_sub_8F0C90
 		imul    ebp, 0x7C
+		//mov     eax, [edi + 0x11C]
 		mov     eax, [edi + 0x0F8]
 		mov     ecx, [eax + ebp]
 		shr     ecx, 2
@@ -591,10 +593,11 @@ jump_6:
 		//fstp	[esp + 0x1C + 0x8] // var_78
 		call    SOULSTORM_sub_8F0CD0
 		mov     edx, [esp + 0x24 - 0x14] // var_64
-		mov     eax, [edx + 0F8h]
+		mov     eax, [edx + 0xF8]
+		//mov     eax, [edx + 0x11C]
 		mov     ecx, [esp + 0x7C] // arg_4
 		add     eax, ebp
-		or		[eax], 4
+		or		DWORD32[eax], 4
 		mov		[eax + 8], ecx
 		lea     edi, [eax + 0x0C]
 		mov     ecx, 0x0C
@@ -694,24 +697,25 @@ jump_2:
 		call    eax // ArmyModelBone string
 		mov     edx, [edi]
 		mov     ebp, eax
-		mov     eax, [edx + 0x118] // raceID
+		mov     eax, [edx + 0x118] // raceID poiner
 		push    ebx
 		mov     ecx, edi
-		call    eax // 00 value?
+		call    eax // raceID
 		sub		esp, 0x08
-		fstp	[esp + 0x24 - 0x14] // var_138 modified
+		fstp	[esp + 0x24 - 0x14] // var_138 ArmyModelScale value
 		fld		[esp + 0x24 - 0x14] // ?
-		mov     edx, [esi + 0x164] // pointer to raceID
+		mov     edx, [esi + 0x160] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
 		push    ecx
 		fstp	[esp] // var_154
 		lea     ecx, [esp + 0x24 - 0xC] // var_134 DATAMARK id data start
 		push    ecx // var_134 DATAMARK id data start
 		push    ebp // master
-		//add     edx, ebx		//DISABLE FOR TESTING PURPOSES
+		add     edx, ebx		//DISABLE FOR TESTING PURPOSES
+		add     edx, 0x1
 		push    edx // unknown ID 2 unitID?
 		mov     ecx, esi
-		//call	SOULSTORM_placeCommanderModelOnMarkerFunction_2
-		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( pointer to raceID?, ArmyModelBone string, var_134 DATAMARK id data start )
+		//call	SOULSTORM_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start )
+		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start )
 		pop     edi
 		pop     esi
 		pop     ebp
@@ -1213,12 +1217,8 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction()
 
 	__asm
 	{
-		mov     ecx, [esi + 0x138]
-		mov     ebx, [esp + 0x24 - 0xC]
-		mov		[ecx + edi * 4], ebx
-		push    edi
-		mov     ecx, esi
-		call    SOULSTORM_placeCommanderIconOnMetamap
+		
+		
 		mov     ecx, [esi + 0x138]
 		mov     ebx, [esp + 0x24 - 0xC]
 		mov		[ecx + edi * 4], ebx
@@ -1227,6 +1227,13 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction()
 		push    edi
 		mov     ecx, esi
 		call    displayCommanderModelOnMetamapGFXScreen
+		// required
+		mov     ecx, [esi + 0x138]
+		mov     ebx, [esp + 0x24 - 0xC]
+		mov[ecx + edi * 4], ebx
+		push    edi
+		mov     ecx, esi
+		call    SOULSTORM_placeCommanderIconOnMetamap
 	}
 
 	//restore stack
@@ -1276,6 +1283,7 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_1()
 		mov		[ebp + edi * 4], eax // FFFFFFFF value set on memory_pointer_1
 		call	displayCommanderModelOnMetamapGFXScreen // (raceID, terrainID)
 skip:
+		
 		mov     edx, [ebx]
 		mov     eax, [edx + 0x12C]
 		mov     ebp, [esi + 0x138]
@@ -1286,6 +1294,7 @@ skip:
 		mov     ecx, esi
 		mov		[ebp + edi * 4], eax
 		call    SOULSTORM_placeCommanderIconOnMetamap // (terrainID)
+		
 	}
 
 	//restore stack
@@ -1298,6 +1307,7 @@ skip:
 	}
 }
 
+// responsible for commanders for races ID 3 and below
 int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_2()
 {
 	// save address to return in the future
@@ -1336,12 +1346,14 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_2()
 		mov     ecx, esi
 		call	displayCommanderModelOnMetamapGFXScreen // (raceID, terrainID)
 skip:
+		
 		mov     ecx, [esi + 0x138]
 		mov     ebx, [esp + 0x24 - 0x8]
 		mov		[ecx + edi * 4], ebx
 		push    edi
 		mov     ecx, esi
 		call    SOULSTORM_placeCommanderIconOnMetamap // (terrainID)
+		
 	}
 
 	//restore stack
@@ -1351,6 +1363,61 @@ skip:
 
 		push	return_address
 		ret	
+	}
+}
+
+// moving commander model on metamap, responsible for commanders for races ID 4 and higher?
+int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_3()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop		return_address
+	}
+
+	__asm
+	{
+		mov     ecx, [esi + 0x138]
+		mov     ebp, [ecx + ebx * 4]
+		//cmp		edi, 0x00 // TESTING ONLY
+		//jg		skip //TESTING ONLY
+		
+		push    ebp
+		push    ebx
+		mov     ecx, esi
+		call    placeCommanderModelOnMarker
+		//call    displayCommanderModelOnMetamapGFXScreen
+		
+		mov     eax, [esi + 0x138]
+		mov     ecx, [eax + ebx * 4]
+		push    ecx
+		push    ebx
+		mov     ecx, esi
+		call    displayCommanderModelOnMetamapGFXScreenFunction_2 // (raceID, terrainID) modified to display tau canoon FX effect
+		fstp    st
+skip :
+		//call    SOULSTORM_sub_96EAA0
+		//mov     ecx, eax
+		//call    SOULSTORM_sub_96F440
+		
+		// required for continue button to work
+		mov     edx, [esi + 0x138]
+		push    ebx
+		mov     ecx, esi
+		mov		[edx + ebx * 4], ebp
+		call    SOULSTORM_placeCommanderIconOnMetamap // (terrainID)
+		//mov     ebp, [esp + 0x24 - 0x10]
+		
+	}
+
+	//restore stack
+	//restore overwritten code
+	__asm
+	{
+
+		push	return_address
+		ret
 	}
 }
 
@@ -1426,6 +1493,39 @@ int __declspec(naked) new_NewCampaignGameStartFunction_1()
 	}
 }
 
+int __declspec(naked) new_NewCampaignGameStartSubfunction_2()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		//pop		return_address
+		//push    SOULSTORM_aOnsidebarexite
+		//mov     ecx, edi
+		//call    ebx
+
+		//pushad
+	}
+
+	__asm
+	{
+		mov     edx, [ecx + 0x160] // was ecx + 0x164
+		add		edx, 1
+		add     edx, [esp + 0x24 - 0x20] // current player raceID?
+		mov		[esp + 0x24 - 0x20], edx
+		jmp     SOULSTORM_sub_77CC90
+	}
+
+	//restore stack
+	//restore overwritten code
+	__asm
+	{
+
+		//push	return_address
+		ret
+	}
+}
+
 // funciton that disables stuff in load game screen
 int __declspec(naked) test_function()
 {
@@ -1446,6 +1546,38 @@ int __declspec(naked) test_function()
 	}
 }
 
+int __declspec(naked) new_NewCampaignGameStartSubfunction_3()
+{
+	__asm
+	{
+		//pop		return_address
+		mov     edx, [edi]
+		mov     eax, [edx + 0x12C]
+		push    ebx
+		mov     ecx, edi
+		call    eax
+		mov     ecx, [esi + 0x138]
+		mov     edx, [edi]
+		mov     ebp, eax
+		mov     eax, [edx + 0x270]
+		mov		[esp + 0x24 - 0x10], ecx // var_8
+		mov     ecx, edi
+		call    eax
+		mov     ecx, [esp + 0x24 - 0x10] // var_8
+		mov		[ecx + ebx * 4], eax
+		cmp		edi, 0x01 // TESTING ONLY
+		jg		skip //TESTING ONLY
+
+		push    ebp
+		push    ebx
+		mov     ecx, esi
+		call    displayCommanderModelOnMetamapGFXScreen
+skip:
+		//mov     ebp, [esp + 0x24 - 0x10] // var_4
+		//push	return_address
+		ret
+	}
+}
 
 // funciton that disables stuff in load game screen
 int __declspec(naked) test_function2()
@@ -1463,6 +1595,6 @@ int __declspec(naked) test_function2()
 		jmp     SOULSTORM_loc_6CB20B
 
 		push	return_address
-			ret
+		ret
 	}
 }

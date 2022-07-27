@@ -117,7 +117,7 @@ ASMPTR(SOULSTORM, aOnsidebarexite, 0x6D33B4, -1)
 //ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D27FA, -1)
 ASMPTR(SOULSTORM, aMrkr_S_cmd, 0x6D2803, -1)
 //ASMPTR(SOULSTORM, ateleport, 0x6D27F9, -1)
-ASMPTR(SOULSTORM, atau_cannon_vyasastan, 0x6D27F9, -1)
+ASMPTR(SOULSTORM, atau_cannon_vyasastan, 0x6D27EE, -1)
 ASMPTR(SOULSTORM, aMarkerSMissing, 0x6CECEC, -1)
 //ASMPTR(SOULSTORM, aTau_cannon_, 0x6D2704, -1)
 ASMPTR(SOULSTORM, loc_415254, 0x15254, -1)
@@ -140,6 +140,7 @@ FUNCPTR(SOULSTORM, placeCommanderIconOnMetamap, int __stdcall, (int), 0x3773A0, 
 FUNCPTR(SOULSTORM, sub_8DD580, int, (void), 0x4DD580, -1)
 FUNCPTR(SOULSTORM, sub_8DDE60, int __stdcall, (int, int), 0x4DDE60, -1)
 FUNCPTR(SOULSTORM, sub_8F8980, int, (void), 0x4F8980, -1)
+FUNCPTR(SOULSTORM, sub_77CC90, int __stdcall, (int, int), 0x37CC90, -1)
 
 FUNCPTR(SOULSTORM, displayCommanderModelOnMetamapGFXScreenFunction_1, int __stdcall, (int, int, int, int, char), 0x2884C0, -1)
 

@@ -15,7 +15,7 @@ HINSTANCE UNI_EXT::instance;
 
 Patch* patches[] = {
 
-//*** FINISHED PATCHES ***
+	//*** FINISHED PATCHES ***
 
 	// increase maximum number of defeated races in campaign commander screen
 	new Patch(Overwrite, SOULSTORM, { 0x81F350, 0x6BDD24 }, { 0x0A, 0x00, 0x00, 0x00 }, 4),
@@ -49,17 +49,30 @@ Patch* patches[] = {
 	
 	new Patch(Overwrite, SOULSTORM,{ 0x6D2802, -1 },{ 0x00, 0x6D, 0x72, 0x6B, 0x72, 0x5F, 0x25, 0x73, 0x5F, 0x63, 0x6D, 0x64, 0x00 }, 13), // mrkr_%s_cmd
 	//new Patch(Overwrite, SOULSTORM,{ 0x6D27F8, -1 },{ 0x00, 0x74, 0x65, 0x6C, 0x65, 0x70, 0x6F, 0x72, 0x74, 0x00 }, 10), // teleport
-	//new Patch(Overwrite, SOULSTORM,{ 0x6D27F8, -1 },{ 0x00, 0x74, 0x61, 0x75, 0x5F, 0x63, 0x61, 0x6E, 0x6E, 0x6F, 0x6E, 0x5F, 0x56, 0x79, 0x61, 0x73, 0x61, 0x73, 0x74, 0x61, 0x6E, 0x00 }, 22), // tau_cannon_Vyasastan
-	new Patch(Call, SOULSTORM,{ 0x378506, -1 }, (int)new_PlaceObjectsOnMetamapFunction, 17),
-	//new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 38),
-	new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
-	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction, 21),
-	new Patch(Call, SOULSTORM,{ 0x377755, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_1, 31),
-	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 21),
-	new Patch(Call, SOULSTORM,{ 0x3782AF, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 33),
-	//new Patch(Call, SOULSTORM,{ 0x37B883, -1 }, (int)dark_crusade_placeCommanderModelOnMarkerFunction_2, 25),
+	new Patch(Overwrite, SOULSTORM,{ 0x6D27ED, -1 },{ 0x00, 0x74, 0x61, 0x75, 0x5F, 0x63, 0x61, 0x6E, 0x6E, 0x6F, 0x6E, 0x5F, 0x56, 0x79, 0x61, 0x73, 0x61, 0x73, 0x74, 0x61, 0x6E, 0x00 }, 22), // tau_cannon_Vyasastan
+	//new Patch(Call, SOULSTORM,{ 0x378506, -1 }, (int)new_PlaceObjectsOnMetamapFunction, 17),
+	//new Patch(Overwrite, SOULSTORM,{ 0x37845A, -1 },{ 0x57, 0x90 }, 2),
+	//new Patch(Overwrite, SOULSTORM,{ 0x378461, -1 },{ 0x90, 0x90, 0x90, 0x90, 0x90 }, 5),
 
-	//new Patch(Call, SOULSTORM,{ 0x39197A, -1 }, (int)new_NewCampaignGameStartFunction_1, 5),
+	// inside placeObjectsOnMetamapFunction?
+	new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_3, 38),
+	new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
+	new Patch(Call, SOULSTORM,{ 0x3782AF, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 33),
+
+	// inside setOverlayEnabledFunction?
+	new Patch(Call, SOULSTORM,{ 0x377755, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_1, 31),
+
+	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction, 21),
+	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 21),
+	//new Patch(Call, SOULSTORM,{ 0x37B883, -1 }, (int)dark_crusade_placeCommanderModelOnMarkerFunction_2, 25),
+	//new Patch(Overwrite, SOULSTORM,{ 0x37860E, -1 },{ 0xEB, 0xB6 }, 2), // disable part of commander icons
+	//new Patch(Overwrite, SOULSTORM,{ 0x378633, -1 },{ 0x90, 0x90 }, 2), // disable part of commander icons
+
+	// inside NewCampaignGameStart? function
+	new Patch(Call, SOULSTORM,{ 0x39197A, -1 }, (int)new_NewCampaignGameStartFunction_1, 5),
+	//new Patch(Call, SOULSTORM,{ 0x38FF21, -1 }, (int)new_NewCampaignGameStartSubfunction_2, 5), // CRASHES THE GAME
+	new Patch(Call, SOULSTORM,{ 0x3770C3, -1 }, (int)new_NewCampaignGameStartSubfunction_3, 42),
+	//new Patch(Overwrite, SOULSTORM,{ 0x38FF22, -1 },{ 0x6A, 0xCD, 0xFE, 0xFF }, 4),
 
 	//REWRITE THIS FUNCTION FROM DARK CRUSADE CODE
 	//new Patch(Overwrite, SOULSTORM,{ 0x37B883, -1 },{ 0x53, 0x55, 0x8B, 0x6C, 0x24, 0x70, 0x56, 0x57, 0x8B, 0xF9, 0x8B, 0x87, 0xEC, 0x00, 0x00, 0x00, 0x8B, 0x1C, 0xA8, 0x90 }, 20),
