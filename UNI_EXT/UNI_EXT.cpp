@@ -54,10 +54,20 @@ Patch* patches[] = {
 	//new Patch(Overwrite, SOULSTORM,{ 0x37845A, -1 },{ 0x57, 0x90 }, 2),
 	//new Patch(Overwrite, SOULSTORM,{ 0x378461, -1 },{ 0x90, 0x90, 0x90, 0x90, 0x90 }, 5),
 
+
+
 	// inside placeObjectsOnMetamapFunction?
-	new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_3, 38),
+
+	// main commander placement function
 	new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
+
+	// moving commander model on metamap, responsible for commanders for races ID 4 and higher?
+	new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_3, 38),
+
+	// responsible for commanders for races ID 3 and below
 	new Patch(Call, SOULSTORM,{ 0x3782AF, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 33),
+
+
 
 	// inside setOverlayEnabledFunction?
 	new Patch(Call, SOULSTORM,{ 0x377755, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_1, 31),
@@ -71,7 +81,7 @@ Patch* patches[] = {
 	// inside NewCampaignGameStart? function
 	new Patch(Call, SOULSTORM,{ 0x39197A, -1 }, (int)new_NewCampaignGameStartFunction_1, 5),
 	//new Patch(Call, SOULSTORM,{ 0x38FF21, -1 }, (int)new_NewCampaignGameStartSubfunction_2, 5), // CRASHES THE GAME
-	new Patch(Call, SOULSTORM,{ 0x3770C3, -1 }, (int)new_NewCampaignGameStartSubfunction_3, 42),
+	//new Patch(Call, SOULSTORM,{ 0x3770C3, -1 }, (int)new_NewCampaignGameStartSubfunction_3, 42), // CRASHES THE GAME
 	//new Patch(Overwrite, SOULSTORM,{ 0x38FF22, -1 },{ 0x6A, 0xCD, 0xFE, 0xFF }, 4),
 
 	//REWRITE THIS FUNCTION FROM DARK CRUSADE CODE
@@ -83,7 +93,7 @@ Patch* patches[] = {
 	//new Patch(Overwrite, SOULSTORM,{ 0x3782AD, -1 },{ 0xEB, 0x21 }, 2),
 
 	// 0x8F5020 checkKeyNameInDictionaryFunction?
-	// 0x8DDA80 placeModelOnMarker?
+	// 0x8DDA80 findMarkerIDInDatamarkFunction
 	// 0x77B880 placeCommanderModelOnMarkerFunction_2
 	// sub_8F8980 -> sub_8DD580 -> 
 	// 0x8F10B0 placeCommanderModelOnMarkerFunction_1

@@ -393,7 +393,7 @@ jump_2:
 		push    ecx
 		call    SOULSTORM_checkKeyNameInDictionaryFunction
 		mov     ecx, esi
-		call    SOULSTORM_sub_8F89F0
+		call    SOULSTORM_findSkelDInDataskelFunction
 		mov     esi, eax
 		mov		esi, 1 // TESTING ONLY
 		cmp     esi, 0x0FFFFFFFF
@@ -658,15 +658,16 @@ int __declspec(naked) placeCommanderModelOnMarker(int, int) // (raceID, terrainI
 		push    SOULSTORM_aMrkr_S_cmd
 		push	ecx // buffer pointer
 		call    sprintf // (buffer pointer, mrkr_%s_cmd string, terrain name string) returns mrkr_terrainName_cmd string into buffer pointer
+		// eax register is length of string?
 		mov     edx, [esi + 0x160] // number of terrains on metamap
-		mov     eax, [esi + 0x0EC] // unknown register
-		mov     eax, [eax + edx * 4] // pointer to metamap_menu.whm model
+		mov     eax, [esi + 0x0EC] // unknown register 1
+		mov     eax, [eax + edx * 4] // pointer to metamap_menu.whm model?
 		mov     eax, [eax]
 		add     esp, 0x0C
 		test    eax, eax
 		jz      jump_1
 		mov     ecx, [eax + 0x0C]
-		mov		[esp + 0x24 - 0x14], ecx // var_138 pointer to DATAMARK section in metamap_menu.whm model
+		mov		[esp + 0x24 - 0x14], ecx // Subroutine 655038 OR var_138 pointer to DATAMARK section in metamap_menu.whm model
 		jmp     jump_2
 jump_1: 
 		mov		DWORD32[esp + 0x24 - 0x14], 0 // var_138
@@ -678,7 +679,7 @@ jump_2:
 		push    edx // return address?
 		call    SOULSTORM_checkKeyNameInDictionaryFunction // ( return address?, mrkr_terrainName_cmd) returns edx address
 		mov     ecx, [esp + 0x24 - 0x10] // var_138 pointer to DATAMARK section in metamap_menu.whm model
-		call    SOULSTORM_placeModelOnMarker // ( pointer to metamap_menu.whm model ) returns DATAMARK id in metamap_menu.whm file, based on mrkr_terrainName_cmd name - 'masters of the universe' marker is not counted
+		call    SOULSTORM_findMarkerIDInDatamarkFunction // ( pointer to metamap_menu.whm model ) returns DATAMARK id in metamap_menu.whm file, based on mrkr_terrainName_cmd name - 'masters of the universe' marker is not counted
 		cmp     eax, 0x0FFFFFFFF // DATAMARK id
 		//add		eax, 1 // account for 'masters of the universe' marker presence
 		jz      jump_3
@@ -686,9 +687,9 @@ jump_2:
 		lea     ecx, [esp + 0x24 - 0x10] // var_134 pointer to variable
 		push    ecx // var_134 pointer to variable
 		push    eax // DATAMARK id
-		mov     eax, [esi + 0x0EC]
-		mov     ecx, [eax + edx * 4]
-		call    SOULSTORM_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model
+		mov     eax, [esi + 0x0EC] // unknown register 1
+		mov     ecx, [eax + edx * 4] // pointer to metamap_menu.whm model?
+		call    SOULSTORM_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model, BUT modified a bit
 		//call	dark_crusade_style_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model
 		mov     edx, [edi]
 		mov     eax, [edx + 0x114] // ArmyModelBone string pointer
@@ -704,18 +705,18 @@ jump_2:
 		sub		esp, 0x08
 		fstp	[esp + 0x24 - 0x14] // var_138 ArmyModelScale value
 		fld		[esp + 0x24 - 0x14] // ?
-		mov     edx, [esi + 0x160] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
+		mov     edx, [esi + 0x164] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
 		push    ecx
-		fstp	[esp] // var_154
+		fstp	[esp] // var_154 ArmyModelScale value into var_154?
 		lea     ecx, [esp + 0x24 - 0xC] // var_134 DATAMARK id data start
 		push    ecx // var_134 DATAMARK id data start
 		push    ebp // master
-		add     edx, ebx		//DISABLE FOR TESTING PURPOSES
-		add     edx, 0x1
+		//add     edx, ebx		//DISABLE FOR TESTING PURPOSES
+		//add     edx, 0x1
 		push    edx // unknown ID 2 unitID?
 		mov     ecx, esi
-		//call	SOULSTORM_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start )
-		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start )
+		call	SOULSTORM_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start )
+		//call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start )
 		pop     edi
 		pop     esi
 		pop     ebp
@@ -745,6 +746,7 @@ jump_3:
 	}
 }
 
+// main commander placement function
 int __declspec(naked) displayCommanderModelOnMetamapGFXScreen(int, int) // (raceID, terrainID)
 {
 	__asm
@@ -770,7 +772,8 @@ int __declspec(naked) displayCommanderModelOnMetamapGFXScreen(int, int) // (race
 		push    ebx // terrainID
 		mov     ecx, esi
 		push    edi // raceID
-		jnz     jump_4
+		cmp		edi, 0
+		jg      jump_4
 		//jmp		jump_4
 		call    placeCommanderModelOnMarker // (raceID, terrainID)
 		mov     ecx, [esi + 0x138]
