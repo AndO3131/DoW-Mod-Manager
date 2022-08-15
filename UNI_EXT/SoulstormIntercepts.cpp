@@ -58,7 +58,7 @@ jump_2:
 	}
 }
 
-int __declspec(naked) dark_crusade_style_placeCommanderModelOnMarkerFunction_1()
+int __declspec(naked) dark_crusade_style_readMarkerDataFunction()
 {
 	__asm
 	{
@@ -395,7 +395,7 @@ jump_2:
 		mov     ecx, esi
 		call    SOULSTORM_findSkelDInDataskelFunction
 		mov     esi, eax
-		mov		esi, 1 // TESTING ONLY
+		//mov		esi, 1 // TESTING ONLY
 		cmp     esi, 0x0FFFFFFFF
 		mov		[esp + 0x7C], esi // arg_4
 		jnz     jump_4
@@ -408,20 +408,19 @@ jump_4:
 		_emit	0xD9
 		_emit	0x1C
 		_emit	0x24
-		//fstp	[esp + 0x1C + 0x8] // var_78
+		fstp	[esp + 0x1C + 0x8] // var_78
 		call    SOULSTORM_sub_8F0CD0
 		fldz
 		push    ecx
 		_emit	0xD9
 		_emit	0x1C
 		_emit	0x24
-		//fstp	[esp + 0x1C + 0x8] // var_78
+		fstp	[esp + 0x1C + 0x8] // var_78
 		mov     ecx, ebx
 		call	SOULSTORM_sub_8F0C70
 		mov     ecx, ebx
 		call    SOULSTORM_sub_8F0C90
 		imul    ebp, 0x7C
-		//mov     eax, [edi + 0x11C]
 		mov     eax, [edi + 0x0F8]
 		mov     ecx, [eax + ebp]
 		shr     ecx, 2
@@ -590,11 +589,10 @@ jump_6:
 		_emit	0xD9
 		_emit	0x1C
 		_emit	0x24
-		//fstp	[esp + 0x1C + 0x8] // var_78
+		fstp	[esp + 0x1C + 0x8] // var_78
 		call    SOULSTORM_sub_8F0CD0
 		mov     edx, [esp + 0x24 - 0x14] // var_64
 		mov     eax, [edx + 0xF8]
-		//mov     eax, [edx + 0x11C]
 		mov     ecx, [esp + 0x7C] // arg_4
 		add     eax, ebp
 		or		DWORD32[eax], 4
@@ -614,7 +612,7 @@ jump_6:
 		_emit	0xD9
 		_emit	0x1C
 		_emit	0x24
-		//fstp	[esp + 0x1C + 0x8] // var_78
+		fstp	[esp + 0x1C + 0x8] // var_78
 		push    eax
 		call    SOULSTORM_sub_77B400
 jump_3:
@@ -689,8 +687,9 @@ jump_2:
 		push    eax // DATAMARK id
 		mov     eax, [esi + 0x0EC] // unknown register 1
 		mov     ecx, [eax + edx * 4] // pointer to metamap_menu.whm model?
-		call    SOULSTORM_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model, BUT modified a bit
-		//call	dark_crusade_style_placeCommanderModelOnMarkerFunction_1 // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model
+		call    SOULSTORM_readMarkerDataFunction // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model, 
+		// in Dark Crusade modified a bit, in Soulstorm unmodified
+		//call	dark_crusade_style_readMarkerDataFunction // (DATAMARK id, var_134 DATAMARK id data start) returns ?, writes to memory at address var_134 DATAMARK id data from metamap_menu.whm model
 		mov     edx, [edi]
 		mov     eax, [edx + 0x114] // ArmyModelBone string pointer
 		push    ebx
@@ -705,18 +704,20 @@ jump_2:
 		sub		esp, 0x08
 		fstp	[esp + 0x24 - 0x14] // var_138 ArmyModelScale value
 		fld		[esp + 0x24 - 0x14] // ?
-		mov     edx, [esi + 0x164] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
-		push    ecx
+		mov     edx, [esi + 0x160] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
+		// dark crusade's [esi + 0x164] doesn't seem to work - no model found there.
+		push    ecx // unknown pointer
 		fstp	[esp] // var_154 ArmyModelScale value into var_154?
 		lea     ecx, [esp + 0x24 - 0xC] // var_134 DATAMARK id data start
 		push    ecx // var_134 DATAMARK id data start
 		push    ebp // master
 		//add     edx, ebx		//DISABLE FOR TESTING PURPOSES
-		//add     edx, 0x1
-		push    edx // unknown ID 2 unitID?
+		//sub     edx, 0x1
+		push	4
+		//push    edx // unknown ID 2 unitID?
 		mov     ecx, esi
-		call	SOULSTORM_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start )
-		//call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start )
+		//call	SOULSTORM_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start, unknown pointer )
+		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start, unknown pointer )
 		pop     edi
 		pop     esi
 		pop     ebp

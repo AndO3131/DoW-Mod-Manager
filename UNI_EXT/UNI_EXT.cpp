@@ -96,7 +96,7 @@ Patch* patches[] = {
 	// 0x8DDA80 findMarkerIDInDatamarkFunction
 	// 0x77B880 placeCommanderModelOnMarkerFunction_2
 	// sub_8F8980 -> sub_8DD580 -> 
-	// 0x8F10B0 placeCommanderModelOnMarkerFunction_1
+	// 0x8F10B0 readMarkerDataFunction
 	// CONCLUSION: placeCommanderModelOnMarker function from Dark Crusade doesn't exist in Soulstorm.
 
 	// OVERWRITE 0378635 - 037863C (8)
