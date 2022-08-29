@@ -26,6 +26,10 @@ Patch* patches[] = {
 	// increase maximum number of honor guard units in campaign commander screen
 	new Patch(Overwrite, SOULSTORM,{ 0x81F348, 0x6BDD1C },{ 0x12, 0x00, 0x00, 0x00 }, 4),
 
+	// rename METAMAP.GFX, that is called from metamapmapview.screen file
+	// this is required to make new metama1.gfx file load together with UNI_EXT.DLLL library
+	new Patch(Overwrite, SOULSTORM,{ 0x6D3A70, -1 },{ 0x4D, 0x65, 0x74, 0x61, 0x4D, 0x61, 0x70, 0x4D, 0x61, 0x70, 0x56, 0x69, 0x65, 0x31 }, 14), // metamapmapvie1
+
 	// fog remover coded in UNI_EXT.dll
 	/*
 	new Patch(Overwrite, SOULSTORM,{ 0x4282F0, -1 },{ 217, 238,  15,  31,  64,   0 }, 6),
