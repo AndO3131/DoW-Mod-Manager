@@ -8,6 +8,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Security;
 using System.Text;
 using DoW_Mod_Manager;
+using System.IO;
 
 namespace SSUNI_EXTTDLL
 {
@@ -120,11 +121,12 @@ namespace SSUNI_EXTTDLL
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool CloseHandle(IntPtr hObject);
 
-        public static void UNI_EXTdllInjector(Process process, string DllPath)
+        public static void UNI_EXTdllInjector(Process process, string DllPath, string currentModuleFolder)
         {
             IntPtr Size = (IntPtr)DllPath.Length;
             string message = "";
-
+            string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.map";
+      
             // Open handle to the target process
             IntPtr ProcHandle = OpenProcess(
                 ProcessAccessFlags.All,
@@ -134,7 +136,7 @@ namespace SSUNI_EXTTDLL
             {
                 ThemedMessageBox.Show("[!] Handle to target process could not be obtained!", "UNI_EXT.DLL messages");
                 
-                System.Environment.Exit(1);
+                //System.Environment.Exit(1);
             }
             else
             {
@@ -152,7 +154,7 @@ namespace SSUNI_EXTTDLL
             if (DllSpace == null)
             {
                 ThemedMessageBox.Show(message+"[!] DLL space allocation failed.", "UNI_EXT.DLL messages");
-                System.Environment.Exit(1);
+                //System.Environment.Exit(1);
             }
             else
             {
@@ -173,7 +175,7 @@ namespace SSUNI_EXTTDLL
             if (DllWrite == false)
             {
                 ThemedMessageBox.Show(message + "[!] Writing DLL content to target process failed.", "UNI_EXT.DLL messages");
-                System.Environment.Exit(1);
+                //System.Environment.Exit(1);
             }
             else
             {
@@ -187,7 +189,7 @@ namespace SSUNI_EXTTDLL
             if (LoadLibraryAAddress == null)
             {
                 ThemedMessageBox.Show(message + "[!] Obtaining an addess to LoadLibraryA function has failed.", "UNI_EXT.DLL messages");
-                System.Environment.Exit(1);
+                //System.Environment.Exit(1);
             }
             else
             {
@@ -208,10 +210,14 @@ namespace SSUNI_EXTTDLL
             if (RemoteThreadHandle == null)
             {
                 ThemedMessageBox.Show(message + "[!] Obtaining a handle to remote thread in target process failed.", "UNI_EXT.DLL messages");
-                System.Environment.Exit(1);
+                //System.Environment.Exit(1);
             }
             else
             {
+                string[] arrLine1 = File.ReadAllLines(fileName, Encoding.Default);
+                arrLine1[0] = "Model = \"Meta_Map_Menu_New\"";
+                File.WriteAllLines(fileName, arrLine1, Encoding.Default);
+
                 message += "[+] Obtaining a handle to remote thread (0x" + RemoteThreadHandle + ") in target process is successful.\n";
                 System.Threading.Thread.Sleep(3000);
                 //ThemedMessageBox.Show(message + "[+] Obtaining a handle to remote thread (0x" + RemoteThreadHandle + ") in target process is successful.", "UNI_EXT.DLL messages");
@@ -226,7 +232,7 @@ namespace SSUNI_EXTTDLL
             if (FreeDllSpace == false)
             {
                 ThemedMessageBox.Show(message + "[!] Failed to release DLL memory in target process.", "UNI_EXT.DLL messages");
-                System.Environment.Exit(1);
+                //System.Environment.Exit(1);
             }
             else
             {
@@ -239,7 +245,6 @@ namespace SSUNI_EXTTDLL
 
             // Close target process handle
             CloseHandle(ProcHandle);
-            
         }
     }
 }

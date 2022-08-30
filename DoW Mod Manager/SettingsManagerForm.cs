@@ -914,36 +914,6 @@ namespace DoW_Mod_Manager
             }
         }
 
-        void SearchForThatString(ref string[] strArray)
-        {
-            bool weFoundIt = false;
-
-            for (int i = 0; i < strArray.Length; i++)
-            {
-                if (strArray[i].StartsWith("allowhwcursor"))
-                {
-                    strArray[i] = ALLOWHWCURSOR + " " + settings[ALLOWHWCURSOR];
-                    weFoundIt = true;
-                    break;      // We found what we searched for
-                }
-            }
-
-            if (!weFoundIt)
-            {
-                using (StreamWriter sw = File.CreateText(DRIVER_SETTINGS_FILE))
-                {
-                    // TODO - maybe just write the new line ;-)
-
-                    // Write all that was in file before
-                    for (int i = 0; i < strArray.Length; i++)
-                        sw.WriteLine(strArray[i]);
-
-                    // And then add this new line
-                    sw.WriteLine(ALLOWHWCURSOR + " " + settings[ALLOWHWCURSOR]);
-                }
-            }
-        }
-
         /// <summary>
         /// This method restores all settings to their default values
         /// </summary>

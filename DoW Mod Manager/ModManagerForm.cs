@@ -10,6 +10,7 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Runtime;
+using System.Text;
 using SSNoFog;
 using SSUNI_EXTTDLL;
 
@@ -83,7 +84,10 @@ namespace DoW_Mod_Manager
         public List<string> AllFoundModules;                                        // Contains the list of all available Mods that will be used by the Mod Merger
         public List<ModuleEntry> AllValidModules;                                        // Contains the list of all playable Mods that will be used by the Mod Merger
         public bool IsTimerResolutionLowered = false;
-        string currentModuleFilePath = "";                                          // Contains the name of the current selected Mod.
+        string currentModuleFilePath = "";                                          // Contains the filename of the current selected Mod.
+        string currentModuleFolder = "";                              // Contains only the folder of the current selected Mod.
+
+        public bool dllLoadedSuccesfully = false;
 
         // Don't make Settings readonly or it couldn't be changed from outside the class!
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0044:Add readonly modifier", Justification = "<Pending>")]
@@ -765,6 +769,7 @@ namespace DoW_Mod_Manager
                 setSelectedModIndex(index);
 
             currentModuleFilePath = ModuleFilePaths[index];
+            currentModuleFolder = FindModFolder(currentModuleFilePath);
 
             requiredModsList.Items.Clear();
 
@@ -790,6 +795,7 @@ namespace DoW_Mod_Manager
 
                 LoadModFoldersFromFile();
                 CheckforInstalledMods();
+
             }
         }
         /// <summary>
@@ -843,9 +849,38 @@ namespace DoW_Mod_Manager
         }
 
         /// <summary>
-        /// This method checks if the Mods are actually REALLY installed by checking if their asset folders are present by the name specified within the *.module files "Modfolder" tagline
+        /// This method returns "ModFolder" value for module file provided by argument
         /// </summary>
         // Request the inlining of this method
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string FindModFolder(string filePath)
+        {
+            string modFolderName = "";
+
+            // Read the *.module file to see the version and if the mod is playable
+            using (StreamReader file = new StreamReader(filePath))
+            {
+                string line;
+
+                // Filter the unplayable mods and populate the List only with playable mods
+                while ((line = file.ReadLine()) != null)
+                {
+                    // Add information about the home mod folder of a mod
+                    if (line.Contains("ModFolder"))
+                    {
+                        int indexOfEqualSigh = line.IndexOf('=');
+                        modFolderName = line.Substring(indexOfEqualSigh + 1, line.Length - indexOfEqualSigh - 1);
+                        modFolderName = modFolderName.Replace(" ", ""); //Remove whitespaces
+                    }
+                }
+            }
+            return modFolderName;
+        }
+
+        /// <summary>
+        /// This method checks if the Mods are actually REALLY installed by checking if their asset folders are present by the name specified within the *.module files "Modfolder" tagline
+        /// </summary>
+            // Request the inlining of this method
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CheckforInstalledMods()
         {
@@ -928,210 +963,6 @@ namespace DoW_Mod_Manager
             StartGameWithOptions(installedModsListBox.SelectedItem.ToString());
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct SECURITY_ATTRIBUTES
-        {
-            public int nLength;
-            public IntPtr lpSecurityDescriptor;
-            public bool bInheritHandle;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct PROCESS_INFORMATION
-        {
-            public IntPtr hProcess;
-            public IntPtr hThread;
-            public int dwProcessId;
-            public int dwThreadId;
-        }
-
-        [Flags]
-        public enum StartFlags : int
-        {
-            STARTF_USESHOWWINDOW = 0x00000001,
-            STARTF_USESIZE = 0x00000002,
-            STARTF_USEPOSITION = 0x00000004,
-            STARTF_USECOUNTCHARS = 0x00000008,
-            STARTF_USEFILLATTRIBUTE = 0x00000010,
-            STARTF_RUNFULLSCREEN = 0x00000020, // ignored by non-x86 platforms
-            STARTF_FORCEONFEEDBACK = 0x00000040,
-            STARTF_FORCEOFFFEEDBACK = 0x00000080,
-            STARTF_USESTDHANDLES = 0x00000100,
-        }
-
-        public enum WindowShowStyle : uint
-        {
-            /// <summary>Hides the window and activates another window.</summary>
-            /// <remarks>See SW_HIDE</remarks>
-            Hide = 0,
-            /// <summary>Activates and displays a window. If the window is minimized
-            /// or maximized, the system restores it to its original size and
-            /// position. An application should specify this flag when displaying
-            /// the window for the first time.</summary>
-            /// <remarks>See SW_SHOWNORMAL</remarks>
-            ShowNormal = 1,
-            /// <summary>Activates the window and displays it as a minimized window.</summary>
-            /// <remarks>See SW_SHOWMINIMIZED</remarks>
-            ShowMinimized = 2,
-            /// <summary>Activates the window and displays it as a maximized window.</summary>
-            /// <remarks>See SW_SHOWMAXIMIZED</remarks>
-            ShowMaximized = 3,
-            /// <summary>Maximizes the specified window.</summary>
-            /// <remarks>See SW_MAXIMIZE</remarks>
-            Maximize = 3,
-            /// <summary>Displays a window in its most recent size and position.
-            /// This value is similar to "ShowNormal", except the window is not
-            /// actived.</summary>
-            /// <remarks>See SW_SHOWNOACTIVATE</remarks>
-            ShowNormalNoActivate = 4,
-            /// <summary>Activates the window and displays it in its current size
-            /// and position.</summary>
-            /// <remarks>See SW_SHOW</remarks>
-            Show = 5,
-            /// <summary>Minimizes the specified window and activates the next
-            /// top-level window in the Z order.</summary>
-            /// <remarks>See SW_MINIMIZE</remarks>
-            Minimize = 6,
-            /// <summary>Displays the window as a minimized window. This value is
-            /// similar to "ShowMinimized", except the window is not activated.</summary>
-            /// <remarks>See SW_SHOWMINNOACTIVE</remarks>
-            ShowMinNoActivate = 7,
-            /// <summary>Displays the window in its current size and position. This
-            /// value is similar to "Show", except the window is not activated.</summary>
-            /// <remarks>See SW_SHOWNA</remarks>
-            ShowNoActivate = 8,
-            /// <summary>Activates and displays the window. If the window is
-            /// minimized or maximized, the system restores it to its original size
-            /// and position. An application should specify this flag when restoring
-            /// a minimized window.</summary>
-            /// <remarks>See SW_RESTORE</remarks>
-            Restore = 9,
-            /// <summary>Sets the show state based on the SW_ value specified in the
-            /// STARTUPINFO structure passed to the CreateProcess function by the
-            /// program that started the application.</summary>
-            /// <remarks>See SW_SHOWDEFAULT</remarks>
-            ShowDefault = 10,
-            /// <summary>Windows 2000/XP: Minimizes a window, even if the thread
-            /// that owns the window is hung. This flag should only be used when
-            /// minimizing windows from a different thread.</summary>
-            /// <remarks>See SW_FORCEMINIMIZE</remarks>
-            ForceMinimized = 11
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct STARTUPINFO
-        {
-            public int cb;
-            public string lpReserved;
-            public string lpDesktop;
-            public string lpTitle;
-            public int dwX;
-            public int dwY;
-            public int dwXSize;
-            public int dwYSize;
-            public int dwXCountChars;
-            public int dwYCountChars;
-            public int dwFillAttribute;
-            public StartFlags dwFlags;
-            public WindowShowStyle wShowWindow;
-            public short cbReserved2;
-            public IntPtr lpReserved2;
-            public IntPtr hStdInput;
-            public IntPtr hStdOutput;
-            public IntPtr hStdError;
-        }
-
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern bool CreateProcess(
-           string lpApplicationName,
-           string lpCommandLine,
-           ref SECURITY_ATTRIBUTES lpProcessAttributes,
-           ref SECURITY_ATTRIBUTES lpThreadAttributes,
-           bool bInheritHandles,
-           uint dwCreationFlags,
-           IntPtr lpEnvironment,
-           string lpCurrentDirectory,
-           [In] ref STARTUPINFO lpStartupInfo,
-           out PROCESS_INFORMATION lpProcessInformation);
-
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern bool CreateProcessAsUserA(
-           IntPtr hToken,
-           string lpApplicationName,
-           string lpCommandLine,
-           ref SECURITY_ATTRIBUTES lpProcessAttributes,
-           ref SECURITY_ATTRIBUTES lpThreadAttributes,
-           bool bInheritHandles,
-           ProcessCreationFlags dwCreationFlags,
-           IntPtr lpEnvironment,
-           string lpCurrentDirectory,
-           ref STARTUPINFO lpStartupInfo,
-           out PROCESS_INFORMATION lpProcessInformation
-         );
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct PDETOUR_CREATE_PROCESS_ROUTINEA
-        {
-            public string lpApplicationName;
-            public string lpCommandLine;
-            public SECURITY_ATTRIBUTES lpProcessAttributes;
-            public SECURITY_ATTRIBUTES lpThreadAttributes;
-            public bool bInheritHandles;
-            public uint dwCreationFlags;
-            public IntPtr lpEnvironment;
-            public string lpCurrentDirectory;
-            public STARTUPINFO lpStartupInfo;
-            public PROCESS_INFORMATION lpProcessInformation;
-        }
-
-        public enum ProcessCreationFlags : uint
-        {
-            DEBUG_PROCESS = 0x00000001,
-            DEBUG_ONLY_THIS_PROCESS = 0x00000002,
-            CREATE_SUSPENDED = 0x00000004,
-            DETACHED_PROCESS = 0x00000008,
-            CREATE_NEW_CONSOLE = 0x00000010,
-            NORMAL_PRIORITY_CLASS = 0x00000020,
-            IDLE_PRIORITY_CLASS = 0x00000040,
-            HIGH_PRIORITY_CLASS = 0x00000080,
-            REALTIME_PRIORITY_CLASS = 0x00000100,
-            CREATE_NEW_PROCESS_GROUP = 0x00000200,
-            CREATE_UNICODE_ENVIRONMENT = 0x00000400,
-            CREATE_SEPARATE_WOW_VDM = 0x00000800,
-            CREATE_SHARED_WOW_VDM = 0x00001000,
-            CREATE_FORCEDOS = 0x00002000,
-            BELOW_NORMAL_PRIORITY_CLASS = 0x00004000,
-            ABOVE_NORMAL_PRIORITY_CLASS = 0x00008000,
-            INHERIT_PARENT_AFFINITY = 0x00010000,
-            INHERIT_CALLER_PRIORITY = 0x00020000,
-            CREATE_PROTECTED_PROCESS = 0x00040000,
-            EXTENDED_STARTUPINFO_PRESENT = 0x00080000,
-            PROCESS_MODE_BACKGROUND_BEGIN = 0x00100000,
-            PROCESS_MODE_BACKGROUND_END = 0x00200000,
-            CREATE_BREAKAWAY_FROM_JOB = 0x01000000,
-            CREATE_PRESERVE_CODE_AUTHZ_LEVEL = 0x02000000,
-            CREATE_DEFAULT_ERROR_MODE = 0x04000000,
-            CREATE_NO_WINDOW = 0x08000000,
-            PROFILE_USER = 0x10000000,
-            PROFILE_KERNEL = 0x20000000,
-            PROFILE_SERVER = 0x40000000,
-            CREATE_IGNORE_SYSTEM_DEFAULT = 0x80000000,
-        }
-
-        [DllImport("UNI_EXT.dll", CharSet = CharSet.Auto)]
-        public static extern void DetourCreateProcessWithDllEx(string lpApplicationName,
-                                          string lpCommandLine,
-                                          ref SECURITY_ATTRIBUTES lpProcessAttributes,
-                                          ref SECURITY_ATTRIBUTES lpThreadAttributes,
-                                          bool bInheritHandles,
-                                          ProcessCreationFlags dwCreationFlags,
-                                          IntPtr lpEnvironment,
-                                          string lpCurrentDirectory,
-                                          [In] ref STARTUPINFO lpStartupInfo,
-                                          out PROCESS_INFORMATION lpProcessInformation,
-                                          string lpDllName,
-                                          out PDETOUR_CREATE_PROCESS_ROUTINEA pfCreateProcessA);
-
         /// <summary>
         /// This method handles starting an instance of CurrentGameEXE with arguments
         /// </summary>
@@ -1152,22 +983,6 @@ namespace DoW_Mod_Manager
             proc.StartInfo.FileName = CurrentGameEXE;
             proc.StartInfo.Arguments = arguments;
             proc.Start();
-           /*
-            STARTUPINFO si = new STARTUPINFO();
-            PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
-            SECURITY_ATTRIBUTES pa = new SECURITY_ATTRIBUTES();
-            SECURITY_ATTRIBUTES ta = new SECURITY_ATTRIBUTES();
-            PDETOUR_CREATE_PROCESS_ROUTINEA cp = new PDETOUR_CREATE_PROCESS_ROUTINEA();
-
-            si.cb = Marshal.SizeOf(si);
-            si.dwFlags = StartFlags.STARTF_USESHOWWINDOW;
-            si.wShowWindow = WindowShowStyle.Show; 
-
-            DetourCreateProcessWithDllEx(CurrentGameEXE, arguments, ref pa, ref ta, true,
-                   ProcessCreationFlags.CREATE_DEFAULT_ERROR_MODE | ProcessCreationFlags.CREATE_SUSPENDED,
-                   IntPtr.Zero, null, ref si, out pi,
-                   "UNI_EXT.dll", out cp);
-            */
             
             _dowProcessName = proc.ProcessName;
 
@@ -1242,7 +1057,7 @@ namespace DoW_Mod_Manager
                         try
                         {
                             Process[] dow = Process.GetProcessesByName(procName);
-                            UNI_EXTDLLLoader.UNI_EXTdllInjector(dow[0], CurrentDir + "\\UNI_EXT.DLL");
+                            UNI_EXTDLLLoader.UNI_EXTdllInjector(dow[0], CurrentDir + "\\UNI_EXT.DLL", currentModuleFolder);
                             break;                                              // We've done what we intended to do
                         }
                         catch (Exception)
@@ -1253,7 +1068,41 @@ namespace DoW_Mod_Manager
                 }
                 ).Start();
             }
-            
+
+            // wait until DoW closes and clean kaurava.map file
+            new Thread(() =>
+            {
+                int timeOutCounter = 0;
+                string procName = _dowProcessName;
+
+                // We will try 30 times and then Thread will be terminated regardless
+                while (timeOutCounter < 30)
+                {
+                    Thread.Sleep(1000);
+                    try
+                    {
+                        Process[] dow = Process.GetProcessesByName(procName);
+                        while (!dow[0].HasExited)
+                        {
+                            Thread.Sleep(10000);
+                        }
+                        string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.map";
+                        string[] arrLine = File.ReadAllLines(fileName, Encoding.Default);
+                        arrLine[0] = "Model = \"Meta_Map_Menu\"";
+                        File.WriteAllLines(fileName, arrLine, Encoding.Default);
+                        break;                                              // We've done what we intended to do
+                    }
+                    catch (Exception)
+                    {
+                        timeOutCounter++;
+                    }
+                }
+            }
+            ).Start();
+
+            while (!proc.HasExited)
+                Thread.Sleep(10000);
+
         }
 
         /// <summary>
