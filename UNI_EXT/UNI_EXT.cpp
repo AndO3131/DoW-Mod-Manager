@@ -27,7 +27,7 @@ Patch* patches[] = {
 
 	// rename METAMAP.GFX, that is called from metamapmapview.screen file
 	// this is required to make new metama1.gfx file load together with UNI_EXT.DLLL library
-	new Patch(Overwrite, SOULSTORM,{ 0x6D3A70, -1 },{ 0x4D, 0x65, 0x74, 0x61, 0x4D, 0x61, 0x70, 0x4D, 0x61, 0x70, 0x56, 0x69, 0x65, 0x31 }, 14), // metamapmapvie1
+	//new Patch(Overwrite, SOULSTORM,{ 0x6D3A70, -1 },{ 0x4D, 0x65, 0x74, 0x61, 0x4D, 0x61, 0x70, 0x4D, 0x61, 0x70, 0x56, 0x69, 0x65, 0x31 }, 14), // metamapmapvie1
 
 	// fog remover coded in UNI_EXT.dll
 	/*
@@ -62,10 +62,10 @@ Patch* patches[] = {
 	// inside placeObjectsOnMetamapFunction?
 
 	// main commander placement function
-	new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
+	//new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
 
 	// moving commander model on metamap, responsible for commanders for races ID 4 and higher?
-	new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_3, 38),
+	//new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_3, 38),
 
 	// responsible for commanders for races ID 3 and below
 	new Patch(Call, SOULSTORM,{ 0x3782AF, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 33),
@@ -81,11 +81,14 @@ Patch* patches[] = {
 	//new Patch(Overwrite, SOULSTORM,{ 0x37860E, -1 },{ 0xEB, 0xB6 }, 2), // disable part of commander icons
 	//new Patch(Overwrite, SOULSTORM,{ 0x378633, -1 },{ 0x90, 0x90 }, 2), // disable part of commander icons
 
+
 	// inside NewCampaignGameStart? function
-	new Patch(Call, SOULSTORM,{ 0x39197A, -1 }, (int)new_NewCampaignGameStartFunction_1, 5),
+	//new Patch(Call, SOULSTORM,{ 0x39197A, -1 }, (int)new_NewCampaignGameStartFunction_1, 5),
+
 	//new Patch(Call, SOULSTORM,{ 0x38FF21, -1 }, (int)new_NewCampaignGameStartSubfunction_2, 5), // CRASHES THE GAME
 	//new Patch(Call, SOULSTORM,{ 0x3770C3, -1 }, (int)new_NewCampaignGameStartSubfunction_3, 42), // CRASHES THE GAME
 	//new Patch(Overwrite, SOULSTORM,{ 0x38FF22, -1 },{ 0x6A, 0xCD, 0xFE, 0xFF }, 4),
+
 
 	//REWRITE THIS FUNCTION FROM DARK CRUSADE CODE
 	//new Patch(Overwrite, SOULSTORM,{ 0x37B883, -1 },{ 0x53, 0x55, 0x8B, 0x6C, 0x24, 0x70, 0x56, 0x57, 0x8B, 0xF9, 0x8B, 0x87, 0xEC, 0x00, 0x00, 0x00, 0x8B, 0x1C, 0xA8, 0x90 }, 20),

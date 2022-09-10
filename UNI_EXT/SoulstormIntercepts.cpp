@@ -7,6 +7,27 @@
 //DWORD* base_address;
 DWORD return_address;
 
+int convertRaceIDtoPlanetNumber(int raceID)
+{
+	switch (raceID)
+	{
+		case 0: return 0; // chaos space marines race
+		case 1: return 1; // dark eldar race
+		case 3: return 2; // chaos deamons race
+		case 5: return 3; // eldar race
+		case 8: return 4; // imperial guard race
+		case 11: return 5; // inquisition daemonhunt race
+		case 16: return 6; // necron race
+		case 18: return 7; // ork race
+		case 20: return 8; // sisters of battle race
+		case 21: return 9; // space marines race
+		case 23: return 10; // tau race
+		case 26: return 11; // tyranids race
+		case 27: return 8; // witch hunters race
+		default: return 0;
+	}
+}
+
 int __declspec(naked) placeCommanderModelOnMarkerSubfunction_3()
 {
 	__asm
@@ -704,20 +725,26 @@ jump_2:
 		sub		esp, 0x08
 		fstp	[esp + 0x24 - 0x14] // var_138 ArmyModelScale value
 		fld		[esp + 0x24 - 0x14] // ?
-		mov     edx, [esi + 0x160] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
+		mov     edx, [esi + 0x164] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
 		// dark crusade's [esi + 0x164] doesn't seem to work - no model found there.
 		push    ecx // unknown pointer
+		push	ecx
+		call	convertRaceIDtoPlanetNumber
+		add		esp, 0x04
 		fstp	[esp] // var_154 ArmyModelScale value into var_154?
 		lea     ecx, [esp + 0x24 - 0xC] // var_134 DATAMARK id data start
 		push    ecx // var_134 DATAMARK id data start
 		push    ebp // master
 		//add     edx, ebx		//DISABLE FOR TESTING PURPOSES
-		//sub     edx, 0x1
-		push	4
-		//push    edx // unknown ID 2 unitID?
+		add     edx, 0x5 // jump over real kaurava planet model pointers
+		add		edx, eax // add planet number
+		//push	0x20
+		// [esi + 0x160] is used as a number of terrains, points to metamap_menu.whm model pointer
+		// 0x2B value crashes the game in unification campaign module
+		push    edx // unknown ID 2 unitID?
 		mov     ecx, esi
-		//call	SOULSTORM_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start, unknown pointer )
-		call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start, unknown pointer )
+		call	SOULSTORM_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start, unknown pointer )
+		//call    dark_crusade_style_placeCommanderModelOnMarkerFunction_2 // ( unknown number?, ArmyModelBone string, var_134 DATAMARK id data start, unknown pointer )
 		pop     edi
 		pop     esi
 		pop     ebp
@@ -773,9 +800,10 @@ int __declspec(naked) displayCommanderModelOnMetamapGFXScreen(int, int) // (race
 		push    ebx // terrainID
 		mov     ecx, esi
 		push    edi // raceID
-		cmp		edi, 0
-		jg      jump_4
+		//cmp		edi, 0
+		//jg      jump_4
 		//jmp		jump_4
+		jnz		jump_4
 		call    placeCommanderModelOnMarker // (raceID, terrainID)
 		mov     ecx, [esi + 0x138]
 		mov		[ecx + edi * 4], ebx
@@ -1384,8 +1412,8 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_3()
 	{
 		mov     ecx, [esi + 0x138]
 		mov     ebp, [ecx + ebx * 4]
-		//cmp		edi, 0x00 // TESTING ONLY
-		//jg		skip //TESTING ONLY
+		cmp		edi, 0x00 // TESTING ONLY
+		jg		skip //TESTING ONLY
 		
 		push    ebp
 		push    ebx
