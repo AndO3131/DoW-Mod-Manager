@@ -22,8 +22,8 @@ int convertRaceIDtoPlanetNumber(int raceID)
 		case 20: return 8; // sisters of battle race
 		case 21: return 9; // space marines race
 		case 23: return 10; // tau race
-		case 26: return 11; // tyranids race
-		case 27: return 8; // witch hunters race
+		case 27: return 11; // tyranids race
+		case 28: return 8; // witch hunters race
 		default: return 0;
 	}
 }
