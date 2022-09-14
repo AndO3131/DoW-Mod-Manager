@@ -727,8 +727,8 @@ jump_2:
 		fld		[esp + 0x24 - 0x14] // ?
 		mov     edx, [esi + 0x164] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
 		// dark crusade's [esi + 0x164] doesn't seem to work - no model found there.
-		push    ecx // unknown pointer
-		push	ecx
+		push    ebx // unknown pointer
+		push	ebx
 		call	convertRaceIDtoPlanetNumber
 		add		esp, 0x04
 		fstp	[esp] // var_154 ArmyModelScale value into var_154?
@@ -1412,30 +1412,31 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction_3()
 	{
 		mov     ecx, [esi + 0x138]
 		mov     ebp, [ecx + ebx * 4]
-		cmp		edi, 0x00 // TESTING ONLY
-		jg		skip //TESTING ONLY
-		
+		//cmp		edi, 0x00 // TESTING ONLY
+		//jg		skip //TESTING ONLY
+		//call    SOULSTORM_sub_96EAA0
+		//mov     ecx, eax
+		//call    SOULSTORM_sub_96F440
 		push    ebp
 		push    ebx
 		mov     ecx, esi
 		call    placeCommanderModelOnMarker
 		//call    displayCommanderModelOnMetamapGFXScreen
-		
+/*		
 		mov     eax, [esi + 0x138]
 		mov     ecx, [eax + ebx * 4]
 		push    ecx
 		push    ebx
 		mov     ecx, esi
 		call    displayCommanderModelOnMetamapGFXScreenFunction_2 // (raceID, terrainID) modified to display tau canoon FX effect
-		fstp    st
+		fstp    st*/
 skip :
-		//call    SOULSTORM_sub_96EAA0
-		//mov     ecx, eax
-		//call    SOULSTORM_sub_96F440
-		
 		// required for continue button to work
 		mov     edx, [esi + 0x138]
 		push    ebx
+		//call    SOULSTORM_sub_96EAA0
+		//mov     ecx, eax
+		//call    SOULSTORM_sub_96F440
 		mov     ecx, esi
 		mov		[edx + ebx * 4], ebp
 		call    SOULSTORM_placeCommanderIconOnMetamap // (terrainID)
