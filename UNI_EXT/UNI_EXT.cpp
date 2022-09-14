@@ -64,7 +64,7 @@ Patch* patches[] = {
 	// main commander placement function
 	//new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
 
-	// moving commander model on metamap, responsible for commanders for races ID 4 and higher?
+	// moving commander model on metamap
 	new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_3, 38),
 
 	// responsible for commanders for races ID 3 and below
