@@ -28,57 +28,6 @@ int convertRaceIDtoPlanetNumber(int raceID)
 	}
 }
 
-int __declspec(naked) placeCommanderModelOnMarkerSubfunction_3()
-{
-	__asm
-	{
-		push    esi
-		mov     esi, ecx
-		mov     ecx, [esi + 0x10]
-		test    ecx, ecx
-		push    edi
-		jz      jump_1
-		call    SOULSTORM_sub_8F8980
-jump_1:
-		mov     ecx, [esi + 0x24]
-		sub     ecx, [esi + 0x20]
-		mov     edi, [esp + 0x24 - 0x18]
-		mov     eax, 0x88888889
-		imul    ecx
-		add     edx, ecx
-		sar     edx, 5
-		mov     eax, edx
-		shr     eax, 0x1F
-		add     eax, edx
-		cmp     edi, eax
-		jnb		jump_2
-		mov     edx, [esi + 0x20]
-		mov     ecx, edi
-		shl     ecx, 4
-		sub     ecx, edi
-		mov     eax, [edx + ecx * 4 + 0x38]
-		pop     edi
-		pop     esi
-		retn    4
-jump_2:
-		mov     ecx, [esi + 0x24]
-		sub     ecx, [esi + 0x20]
-		mov     eax, 0x88888889
-		imul    ecx
-		add     edx, ecx
-		sar     edx, 5
-		mov     eax, edx
-		shr     eax, 0x1F
-		add     eax, edx
-		mov     ecx, eax
-		mov     eax, edi
-		pop     edi
-		sub     eax, ecx
-		pop     esi
-		retn    4
-	}
-}
-
 int __declspec(naked) displayCommanderModelOnMetamapGFXScreenFunction_2()
 {
 	__asm
@@ -1285,16 +1234,20 @@ int __declspec(naked) new_NewCampaignGameStartFunction_1()
 
 	__asm
 	{
-		mov     edx, [edi]
-		mov     eax, [edx + 0x238]
-		mov     ecx, esi
-		call    eax
-		push    eax
-		mov     ecx, edi
-		call    SOULSTORM_NewCampaignGameStartFunction_1
+		sub     esp, 0x0C
 
-		mov     ecx, [esp + 0x24 + 0x3C]
-		pop     edi
+		
+		mov		ebx, 0
+		mov     ecx, [esi + 0x140]
+		mov     ebp, [ecx + ebx * 4]
+		push    ebp
+		push    ebx
+		mov     ecx, esi
+		call    placeCommanderModelOnMarker
+		
+
+		mov     ecx, esp
+
 	}
 
 	//restore stack
