@@ -125,8 +125,9 @@ namespace SSUNI_EXTTDLL
         {
             IntPtr Size = (IntPtr)DllPath.Length;
             string message = "";
-            string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.map";
-      
+            string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.mmcamp";
+            //string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.map";
+
             // Open handle to the target process
             IntPtr ProcHandle = OpenProcess(
                 ProcessAccessFlags.All,
@@ -214,8 +215,10 @@ namespace SSUNI_EXTTDLL
             }
             else
             {
+                // modify "kaurava.mmcamp" file when DLL library is loaded
                 string[] arrLine1 = File.ReadAllLines(fileName, Encoding.Default);
-                arrLine1[0] = "Model = \"Meta_Map_Menu_New\"";
+                //arrLine1[0] = "Model = \"Meta_Map_Menu_New\"";
+                arrLine1[0] = "MapFile = \"Kaurava1\"";
                 File.WriteAllLines(fileName, arrLine1, Encoding.Default);
 
                 message += "[+] Obtaining a handle to remote thread (0x" + RemoteThreadHandle + ") in target process is successful.\n";
