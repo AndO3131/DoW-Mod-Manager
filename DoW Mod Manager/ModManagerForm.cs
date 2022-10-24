@@ -232,6 +232,12 @@ namespace DoW_Mod_Manager
                 }
                 ).Start();
             }
+
+            // restore "kaurava.mmcamp" file when soulstorm closes
+            string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.mmcamp";
+            string[] arrLine = File.ReadAllLines(fileName, Encoding.Default);
+            arrLine[0] = "MapFile = \"Kaurava\"";
+            File.WriteAllLines(fileName, arrLine, Encoding.Default);
         }
 
         /// <summary>
@@ -1152,13 +1158,6 @@ namespace DoW_Mod_Manager
                         arrLine[0] = "MapFile = \"Kaurava\"";
                         File.WriteAllLines(fileName, arrLine, Encoding.Default);
 
-                        // restore "kaurava.map" file when soulstorm closes
-                        /*
-                        string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.map";
-                        string[] arrLine = File.ReadAllLines(fileName, Encoding.Default);
-                        arrLine[0] = "Model = \"Meta_Map_Menu\"";
-                        File.WriteAllLines(fileName, arrLine, Encoding.Default);
-                        */
                         break;                                              // We've done what we intended to do
                     }
                     catch (Exception)
