@@ -233,11 +233,14 @@ namespace DoW_Mod_Manager
                 ).Start();
             }
 
-            // restore "kaurava.mmcamp" file when soulstorm closes
             string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.mmcamp";
-            string[] arrLine = File.ReadAllLines(fileName, Encoding.Default);
-            arrLine[0] = "MapFile = \"Kaurava\"";
-            File.WriteAllLines(fileName, arrLine, Encoding.Default);
+            if (File.Exists(fileName))
+            {
+                // restore "kaurava.mmcamp" file when soulstorm closes
+                string[] arrLine = File.ReadAllLines(fileName, Encoding.Default);
+                arrLine[0] = "MapFile = \"Kaurava\"";
+                File.WriteAllLines(fileName, arrLine, Encoding.Default);
+            }
         }
 
         /// <summary>
@@ -1154,9 +1157,12 @@ namespace DoW_Mod_Manager
                         }
                         // restore "kaurava.mmcamp" file when soulstorm closes
                         string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.mmcamp";
-                        string[] arrLine = File.ReadAllLines(fileName, Encoding.Default);
-                        arrLine[0] = "MapFile = \"Kaurava\"";
-                        File.WriteAllLines(fileName, arrLine, Encoding.Default);
+                        if (File.Exists(fileName))
+                        {
+                            string[] arrLine = File.ReadAllLines(fileName, Encoding.Default);
+                            arrLine[0] = "MapFile = \"Kaurava\"";
+                            File.WriteAllLines(fileName, arrLine, Encoding.Default);
+                        }
 
                         break;                                              // We've done what we intended to do
                     }
