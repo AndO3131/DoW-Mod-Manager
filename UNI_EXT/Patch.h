@@ -8,7 +8,7 @@
 
 class Patch;
 
-enum Dll { SOULSTORM = 0, USERINTERFACE, WXPMOD, MSVCR80, DEBUG };
+enum Dll { SOULSTORM = 0, USERINTERFACE, WXPMOD, MSVCR80, DEBUG, SIMENGINE };
 enum PatchType { Jump = 0xE9, Call = 0xE8, NOP = 0x90, Push = 0x6A, Overwrite };
 
 struct Offsets {

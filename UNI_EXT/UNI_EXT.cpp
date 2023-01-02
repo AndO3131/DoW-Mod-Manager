@@ -57,6 +57,10 @@ Patch* patches[] = {
 	//new Patch(Overwrite, SOULSTORM,{ 0x37845A, -1 },{ 0x57, 0x90 }, 2),
 	//new Patch(Overwrite, SOULSTORM,{ 0x378461, -1 },{ 0x90, 0x90, 0x90, 0x90, 0x90 }, 5),
 
+	// Russian patch to vehicle-versus-infantry pathing issues 
+	// Details in this forum thread http://forums.warforge.ru/index.php?showtopic=258904
+	// Breaks vehicle-terrain interaction
+	//new Patch(Overwrite, SIMENGINE,{ 0x84137, -1 }, { 0x74,  0x0E, 0x8B, 0x46, 0x70 }, 5),
 
 
 	// inside placeObjectsOnMetamapFunction?
