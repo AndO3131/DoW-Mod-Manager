@@ -7,7 +7,7 @@
 //DWORD* base_address;
 DWORD return_address;
 
-int convertRaceIDtoPlanetNumber(int raceID)
+int checkActiveRaceIDInCampaign(int raceID)
 {
 	switch (raceID)
 	{
@@ -22,17 +22,17 @@ int convertRaceIDtoPlanetNumber(int raceID)
 		case 20: ; // sisters of battle race
 		case 21: ; // space marines race
 		case 23: ; // tau race
-		case 28: return 1; // tyranids race
-		//case 29: ; // witch hunters race
+		case 27: return 1; // tyranids race
+		case 28: ; // witch hunters race
 		default: return 0;
 	}
 }
 
-int checkActiveRaceIDInCampaign(int raceID)
+int convertRaceIDtoPlanetNumber(int raceID)
 {
 	switch (raceID)
 	{
-		case 0: return 1; // chaos space marines race
+		case 0: return 0; // chaos space marines race
 		case 1: return 1; // dark eldar race
 		case 3: return 2; // chaos deamons race
 		case 5: return 3; // eldar race
@@ -44,10 +44,9 @@ int checkActiveRaceIDInCampaign(int raceID)
 		case 21: return 9; // space marines race
 		case 23: return 10; // tau race
 		case 27: return 11; // tyranids race
-		//case 28: return 8; // witch hunters race
+		case 28: return 8; // witch hunters race
 		default: return 0;
 	}
-
 }
 
 int __declspec(naked) displayCommanderModelOnMetamapGFXScreenFunction_2()
