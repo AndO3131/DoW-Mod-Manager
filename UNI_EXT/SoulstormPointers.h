@@ -145,6 +145,10 @@ FUNCPTR(SOULSTORM, sub_77CC90, int __stdcall, (int, int), 0x37CC90, -1)
 FUNCPTR(SOULSTORM, displayCommanderModelOnMetamapGFXScreenFunction_1, int __stdcall, (int, int, int, int, char), 0x2884C0, -1)
 
 
+// definitions for WXPMOD.DLL functions
+FUNCPTR(WXPMOD, functionRunWhenRaceIsSelected5, int __stdcall, (int), 0x2301E0, -1)
+
+
 #undef FUNCPTR
 #undef ASMPTR
 #undef VARPTR

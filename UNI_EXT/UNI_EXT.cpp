@@ -83,6 +83,10 @@ Patch* patches[] = {
 	//new Patch(Call, SOULSTORM,{ 0x3913C8, -1 }, (int)new_NewCampaignGameStartFunction_1, 5),
 
 
+	// patch for using ally races in campaign
+	new Patch(Call,	WXPMOD,{ 0x2329AF, -1 }, (int)new_functionRunWhenRaceIsSelected, 15),
+
+
 	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction, 21),
 	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 21),
 	//new Patch(Call, SOULSTORM,{ 0x37B883, -1 }, (int)dark_crusade_placeCommanderModelOnMarkerFunction_2, 25),

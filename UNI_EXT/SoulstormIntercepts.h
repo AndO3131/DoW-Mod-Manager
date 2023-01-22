@@ -27,3 +27,5 @@ int new_NewCampaignGameStartSubfunction_3();
 int test_function();
 
 int test_function2();
+
+int new_functionRunWhenRaceIsSelected();

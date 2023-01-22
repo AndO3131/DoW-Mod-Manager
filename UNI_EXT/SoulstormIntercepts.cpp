@@ -1313,6 +1313,30 @@ int __declspec(naked) test_function()
 	}
 }
 
+int __declspec(naked) new_functionRunWhenRaceIsSelected()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop return_address
+	}
+
+	__asm
+	{
+		test    al, al	//change al register according to races selected
+		jz      loc_1A4329BB
+		push    edi
+		mov     ecx, esi
+        call    WXPMOD_functionRunWhenRaceIsSelected5
+loc_1A4329BB:
+		add     edi, 1
+
+		push	return_address
+		ret
+	}
+}
+
 int __declspec(naked) new_NewCampaignGameStartSubfunction_3()
 {
 	__asm
