@@ -147,7 +147,7 @@ FUNCPTR(SOULSTORM, displayCommanderModelOnMetamapGFXScreenFunction_1, int __stdc
 
 // definitions for WXPMOD.DLL functions
 FUNCPTR(WXPMOD, functionRunWhenRaceIsSelected5, int __stdcall, (int), 0x2301E0, -1)
-
+FUNCPTR(WXPMOD, sub_1A43D3D0, int __stdcall, (int), 0x23D3D0, -1)
 
 #undef FUNCPTR
 #undef ASMPTR

@@ -11,7 +11,28 @@ int convertRaceIDtoPlanetNumber(int raceID)
 {
 	switch (raceID)
 	{
-		case 0: return 0; // chaos space marines race
+		case 0: ; // chaos space marines race
+		case 1: ; // dark eldar race
+		case 3: ; // chaos deamons race
+		case 5: ; // eldar race
+		case 8: ; // imperial guard race
+		case 11: ; // inquisition daemonhunt race
+		case 16: ; // necron race
+		case 18: ; // ork race
+		case 20: ; // sisters of battle race
+		case 21: ; // space marines race
+		case 23: ; // tau race
+		case 28: return 1; // tyranids race
+		//case 29: ; // witch hunters race
+		default: return 0;
+	}
+}
+
+int checkActiveRaceIDInCampaign(int raceID)
+{
+	switch (raceID)
+	{
+		case 0: return 1; // chaos space marines race
 		case 1: return 1; // dark eldar race
 		case 3: return 2; // chaos deamons race
 		case 5: return 3; // eldar race
@@ -23,9 +44,10 @@ int convertRaceIDtoPlanetNumber(int raceID)
 		case 21: return 9; // space marines race
 		case 23: return 10; // tau race
 		case 27: return 11; // tyranids race
-		case 28: return 8; // witch hunters race
+		//case 28: return 8; // witch hunters race
 		default: return 0;
 	}
+
 }
 
 int __declspec(naked) displayCommanderModelOnMetamapGFXScreenFunction_2()
@@ -1324,7 +1346,13 @@ int __declspec(naked) new_functionRunWhenRaceIsSelected()
 
 	__asm
 	{
-		test    al, al	//change al register according to races selected
+		push    edi
+		mov     ecx, ebx
+		call	WXPMOD_sub_1A43D3D0
+		test    al, al
+		//call    checkActiveRaceIDInCampaign
+		//test    eax, eax	//change register according to races selected
+		//mov		eax, [esi]
 		jz      loc_1A4329BB
 		push    edi
 		mov     ecx, esi
