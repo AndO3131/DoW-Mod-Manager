@@ -11,19 +11,19 @@ int checkActiveRaceIDInCampaign(int raceID)
 {
 	switch (raceID)
 	{
-		case 0: ; // chaos space marines race
-		case 1: ; // dark eldar race
-		case 3: ; // chaos deamons race
-		case 5: ; // eldar race
-		case 8: ; // imperial guard race
-		case 11: ; // inquisition daemonhunt race
-		case 16: ; // necron race
-		case 18: ; // ork race
-		case 20: ; // sisters of battle race
-		case 21: ; // space marines race
-		case 23: ; // tau race
+		case 0: return 1; // chaos space marines race
+		case 1: return 1; // dark eldar race
+		case 3: return 1; // chaos deamons race
+		case 5: return 1; // eldar race
+		case 8: return 1; // imperial guard race
+		case 11: return 1; // inquisition daemonhunt race
+		case 16: return 1; // necron race
+		case 18: return 1; // ork race
+		case 20: return 1; // sisters of battle race
+		case 21: return 1; // space marines race
+		case 23: return 1; // tau race
 		case 27: return 1; // tyranids race
-		case 28: ; // witch hunters race
+		case 28: return 0; // witch hunters race
 		default: return 0;
 	}
 }
@@ -487,7 +487,7 @@ jump_2:
 		push    ecx // var_134 DATAMARK id data start
 		push    ebp // master
 		//add     edx, ebx		//DISABLE FOR TESTING PURPOSES
-		add     edx, 0x5 // jump over real kaurava planet model pointers
+		add     edx, 0x9 // jump over real kaurava planet model pointers
 		add		edx, eax // add planet number
 		//push	0x20
 		// [esi + 0x160] is used as a number of terrains, points to metamap_menu.whm model pointer
@@ -1345,13 +1345,24 @@ int __declspec(naked) new_functionRunWhenRaceIsSelected()
 
 	__asm
 	{
+		//push    edi
+		//call    checkActiveRaceIDInCampaign
+		//test    eax, eax
+		
 		push    edi
+		//test    eax, eax
 		mov     ecx, ebx
+		//test    eax, eax
 		call	WXPMOD_sub_1A43D3D0
-		test    al, al
+		//test    al, al
 		//call    checkActiveRaceIDInCampaign
 		//test    eax, eax	//change register according to races selected
 		//mov		eax, [esi]
+
+		//push    edi
+		//call    checkActiveRaceIDInCampaign
+		//test    eax, eax
+		test    al, al
 		jz      loc_1A4329BB
 		push    edi
 		mov     ecx, esi
@@ -1364,6 +1375,83 @@ loc_1A4329BB:
 	}
 }
 
+int __declspec(naked) isRaceInCampaignReplacementFunction()
+{
+	__asm
+	{
+
+		mov     eax, [ecx + 0xD8]
+		sub     eax, [ecx + 0xD4]
+		push    esi
+		sar     eax, 2
+		push    edi
+		mov     edx, 0
+		jz      loc_1A43D402
+		mov     ecx, [ecx + 0xD4]
+		mov     esi, [esp + 0x14 ]
+loc_1A43D3F2: 
+		mov     edi, [ecx]
+		cmp		[edi], esi
+		jz      loc_1A43D409
+		add     edx, 1
+		add     ecx, 4
+		cmp     edx, eax
+		jb      loc_1A43D3F2
+loc_1A43D402: 
+		pop     edi
+		xor     al, al
+		pop     esi
+		retn	4    
+loc_1A43D409:
+		// additional check for active races in campaign
+		push	esi
+		call	checkActiveRaceIDInCampaign
+		test	eax, eax
+		jz      loc_1A43D402
+		// end of additional check
+		pop     edi
+		mov     al, 1
+		pop     esi
+		retn	4   
+	}
+}
+/*
+int __declspec(naked) mainIsRaceInCampaignReplacementFunction1()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop		return_address
+
+		push    edi
+		mov     ecx, ebx
+		call	isRaceInCampaignReplacementFunction
+		test    al, al
+
+		push	return_address
+		ret
+	}
+}
+
+int __declspec(naked) mainIsRaceInCampaignReplacementFunction2()
+{
+	// save address to return in the future
+	// save stack
+	__asm
+	{
+		pop		return_address
+
+		push    edi
+		mov     ecx, ebp
+		call	isRaceInCampaignReplacementFunction
+		test    al, al
+
+		push	return_address
+		ret
+	}
+}
+*/
 int __declspec(naked) new_NewCampaignGameStartSubfunction_3()
 {
 	__asm

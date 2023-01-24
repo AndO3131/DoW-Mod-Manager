@@ -29,3 +29,9 @@ int test_function();
 int test_function2();
 
 int new_functionRunWhenRaceIsSelected();
+
+int isRaceInCampaignReplacementFunction();
+
+//int mainIsRaceInCampaignReplacementFunction1();
+
+//int mainIsRaceInCampaignReplacementFunction2();
