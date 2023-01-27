@@ -1379,17 +1379,25 @@ int __declspec(naked) isRaceInCampaignReplacementFunction()
 {
 	__asm
 	{
-
+		push	esi
+		push    edi
+			// additional check for active races in campaign
+		mov     esi, [esp + 0xC]
+		call	checkActiveRaceIDInCampaign
+		cmp		eax, 0
+		//add		esp, 0x04
+		jz      loc_1A43D402
+		//cmp		edi, 0x1D
+		// end of additional check
+			
 		mov     eax, [ecx + 0xD8]
 		sub     eax, [ecx + 0xD4]
-		push    esi
 		sar     eax, 2
-		push    edi
 		mov     edx, 0
 		jz      loc_1A43D402
 		mov     ecx, [ecx + 0xD4]
-		mov     esi, [esp + 0x14 ]
-loc_1A43D3F2: 
+		mov     esi, [esp + 0xC]
+loc_1A43D3F2:
 		mov     edi, [ecx]
 		cmp		[edi], esi
 		jz      loc_1A43D409
@@ -1403,12 +1411,6 @@ loc_1A43D402:
 		pop     esi
 		retn	4    
 loc_1A43D409:
-		// additional check for active races in campaign
-		push	esi
-		call	checkActiveRaceIDInCampaign
-		test	eax, eax
-		jz      loc_1A43D402
-		// end of additional check
 		pop     edi
 		mov     al, 1
 		pop     esi

@@ -91,6 +91,9 @@ Patch* patches[] = {
 	//new Patch(Call, WXPMOD,{ 0x2329D4, -1 }, (int)mainIsRaceInCampaignReplacementFunction2, 10),
 	new Patch(Call, WXPMOD,{ 0x2329AA, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
 	new Patch(Call, WXPMOD,{ 0x2329D7, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
+	//new Patch(Call, WXPMOD,{ 0x1BD9, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
+	//new Patch(Call, WXPMOD,{ 0x230C53, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
+	//new Patch(Call, WXPMOD,{ 0x234E49, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
 
 
 	//new Patch(Call, SOULSTORM,{ 0x3782BB, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction, 21),
