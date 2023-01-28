@@ -85,12 +85,8 @@ Patch* patches[] = {
 
 	// patch for using ally races in campaign
 	//COULDN'T JUMP OVER RACE CHECK
-	//new Patch(Call, WXPMOD,{ 0x2329AF, -1 }, (int)new_functionRunWhenRaceIsSelected, 15),
-	//new Patch(Call, WXPMOD,{ 0x2329A7, -1 }, (int)new_functionRunWhenRaceIsSelected, 23),
-	//new Patch(Call, WXPMOD,{ 0x2329A7, -1 }, (int)mainIsRaceInCampaignReplacementFunction1, 10),
-	//new Patch(Call, WXPMOD,{ 0x2329D4, -1 }, (int)mainIsRaceInCampaignReplacementFunction2, 10),
-	new Patch(Call, WXPMOD,{ 0x2329AA, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
-	new Patch(Call, WXPMOD,{ 0x2329D7, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
+	//new Patch(Call, WXPMOD,{ 0x2329AA, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
+	//new Patch(Call, WXPMOD,{ 0x2329D7, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
 	//new Patch(Call, WXPMOD,{ 0x1BD9, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
 	//new Patch(Call, WXPMOD,{ 0x230C53, -1 }, (int)isRaceInCampaignReplacementFunction, 5),
 	//new Patch(Call, WXPMOD,{ 0x234E49, -1 }, (int)isRaceInCampaignReplacementFunction, 5),

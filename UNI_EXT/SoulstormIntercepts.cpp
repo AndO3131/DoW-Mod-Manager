@@ -36,15 +36,17 @@ int convertRaceIDtoPlanetNumber(int raceID)
 		case 1: return 1; // dark eldar race
 		case 3: return 2; // chaos deamons race
 		case 5: return 3; // eldar race
+		case 6: return 0; // emperor's children race
 		case 8: return 4; // imperial guard race
 		case 11: return 5; // inquisition daemonhunt race
 		case 16: return 6; // necron race
 		case 18: return 7; // ork race
 		case 20: return 8; // sisters of battle race
 		case 21: return 9; // space marines race
+		case 22: return 0; // blood angels race
 		case 23: return 10; // tau race
 		case 27: return 11; // tyranids race
-		case 28: return 8; // witch hunters race
+		case 28: return 12; // witch hunters race
 		default: return 0;
 	}
 }
