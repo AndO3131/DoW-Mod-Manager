@@ -35,6 +35,20 @@ Patch* patches[] = {
 	new Patch(Overwrite, SOULSTORM,{ 0x6F54C8, -1 },{ 0,   0,   0,  68 }, 4),
 	new Patch(Overwrite, SOULSTORM,{ 0x42A33A, -1 },{ 221, 216,  15,  31,  64,   0 }, 6),
 	*/
+
+	// add metamap model support
+	new Patch(Overwrite, SOULSTORM,{ 0x6D2802, -1 },{ 0x00, 0x6D, 0x72, 0x6B, 0x72, 0x5F, 0x25, 0x73, 0x5F, 0x63, 0x6D, 0x64, 0x00 }, 13), // mrkr_%s_cmd
+
+	// moving commander model on metamap
+	new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_3, 38),
+
+	// responsible for commanders for races ID 3 and below
+	new Patch(Call, SOULSTORM,{ 0x3782AF, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 33),
+
+	// inside setOverlayEnabledFunction?
+	new Patch(Call, SOULSTORM,{ 0x377755, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_1, 31),
+
+
 	//*** END OF FINISHED PATCHES
 
 	// modify SWFwidget bind from 'ToggleArmy' to 'deep_strike'
@@ -50,9 +64,8 @@ Patch* patches[] = {
 
 	// add metamap model support
 	
-	new Patch(Overwrite, SOULSTORM,{ 0x6D2802, -1 },{ 0x00, 0x6D, 0x72, 0x6B, 0x72, 0x5F, 0x25, 0x73, 0x5F, 0x63, 0x6D, 0x64, 0x00 }, 13), // mrkr_%s_cmd
 	//new Patch(Overwrite, SOULSTORM,{ 0x6D27F8, -1 },{ 0x00, 0x74, 0x65, 0x6C, 0x65, 0x70, 0x6F, 0x72, 0x74, 0x00 }, 10), // teleport
-	new Patch(Overwrite, SOULSTORM,{ 0x6D27ED, -1 },{ 0x00, 0x74, 0x61, 0x75, 0x5F, 0x63, 0x61, 0x6E, 0x6E, 0x6F, 0x6E, 0x5F, 0x56, 0x79, 0x61, 0x73, 0x61, 0x73, 0x74, 0x61, 0x6E, 0x00 }, 22), // tau_cannon_Vyasastan
+	//new Patch(Overwrite, SOULSTORM,{ 0x6D27ED, -1 },{ 0x00, 0x74, 0x61, 0x75, 0x5F, 0x63, 0x61, 0x6E, 0x6E, 0x6F, 0x6E, 0x5F, 0x56, 0x79, 0x61, 0x73, 0x61, 0x73, 0x74, 0x61, 0x6E, 0x00 }, 22), // tau_cannon_Vyasastan
 	//new Patch(Call, SOULSTORM,{ 0x378506, -1 }, (int)new_PlaceObjectsOnMetamapFunction, 17),
 	//new Patch(Overwrite, SOULSTORM,{ 0x37845A, -1 },{ 0x57, 0x90 }, 2),
 	//new Patch(Overwrite, SOULSTORM,{ 0x378461, -1 },{ 0x90, 0x90, 0x90, 0x90, 0x90 }, 5),
@@ -67,17 +80,6 @@ Patch* patches[] = {
 
 	// main commander placement function
 	//new Patch(Call, SOULSTORM,{ 0x378635, -1 }, (int)new_displayCommanderModelOnMetamapGFXScreen, 8),
-
-	// moving commander model on metamap
-	new Patch(Call, SOULSTORM,{ 0x3784F1, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_3, 38),
-
-	// responsible for commanders for races ID 3 and below
-	new Patch(Call, SOULSTORM,{ 0x3782AF, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_2, 33),
-
-
-
-	// inside setOverlayEnabledFunction?
-	new Patch(Call, SOULSTORM,{ 0x377755, -1 }, (int)new_placeObjectsOnMetamapOnLoadFunction_1, 31),
 
 	// inside NewCampaignGameStart? function
 	//new Patch(Call, SOULSTORM,{ 0x3913C8, -1 }, (int)new_NewCampaignGameStartFunction_1, 5),

@@ -7,7 +7,7 @@
     <ProjectGuid>{071DFF9E-1A7F-4F94-A1CE-4B5CB931D8EE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>DoW_Mod_Manager</RootNamespace>
-    <AssemblyName>DoW Mod Manager v2.4.0.0a</AssemblyName>
+    <AssemblyName>DoW Mod Manager v2.4.0.0b</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,6 +35,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>MODenizer.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

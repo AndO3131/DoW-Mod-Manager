@@ -126,7 +126,7 @@ namespace SSUNI_EXTTDLL
             IntPtr Size = (IntPtr)DllPath.Length;
             string message = "";
             string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.mmcamp";
-            //string fileName = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scenarios\\sp\\kaurava.map";
+            string fileName2 = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scar\\campaign_race_substitution_settings.scar";
 
             // Open handle to the target process
             IntPtr ProcHandle = OpenProcess(
@@ -220,6 +220,12 @@ namespace SSUNI_EXTTDLL
                 //arrLine1[0] = "Model = \"Meta_Map_Menu_New\"";
                 arrLine1[0] = "MapFile = \"Kaurava1\"";
                 File.WriteAllLines(fileName, arrLine1, Encoding.Default);
+
+                // modify "Campaign_Race_substitution_Settings.scar" file when DLL library is loaded
+                string[] arrLine2 = File.ReadAllLines(fileName2, Encoding.Default);
+                //arrLine1[0] = "Model = \"Meta_Map_Menu_New\"";
+                arrLine2[0] = "G_Campaign__UNI_EXT_DLL_Active=true";
+                File.WriteAllLines(fileName2, arrLine2, Encoding.Default);
 
                 message += "[+] Obtaining a handle to remote thread (0x" + RemoteThreadHandle + ") in target process is successful.\n";
                 System.Threading.Thread.Sleep(3000);

@@ -1138,7 +1138,7 @@ namespace DoW_Mod_Manager
                 ).Start();
             }
 
-            // wait until DoW closes and clean kaurava.map file
+            // wait until DoW closes and clean kaurava.map and Campaign_Race_substitution_Settings.SCAR files
             new Thread(() =>
             {
                 int timeOutCounter = 0;
@@ -1162,6 +1162,15 @@ namespace DoW_Mod_Manager
                             string[] arrLine = File.ReadAllLines(fileName, Encoding.Default);
                             arrLine[0] = "MapFile = \"Kaurava\"";
                             File.WriteAllLines(fileName, arrLine, Encoding.Default);
+                        }
+
+                        // restore "Campaign_Race_substitution_Settings.SCAR" file when soulstorm closes
+                        string fileName2 = Directory.GetCurrentDirectory() + "\\" + currentModuleFolder + "\\data\\scar\\campaign_race_substitution_settings.scar";
+                        if (File.Exists(fileName2))
+                        {
+                            string[] arrLine2 = File.ReadAllLines(fileName2, Encoding.Default);
+                            arrLine2[0] = "G_Campaign__UNI_EXT_DLL_Active=false";
+                            File.WriteAllLines(fileName2, arrLine2, Encoding.Default);
                         }
 
                         break;                                              // We've done what we intended to do
