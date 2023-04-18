@@ -1489,6 +1489,19 @@ skip:
 	}
 }
 
+int __declspec(naked) new_metamapShowNextFrameFunction()
+{
+	__asm
+	{
+		mov     eax, [esi]
+		mov     edx, [eax + 0x238]
+		mov     ecx, esi
+		call    edx
+		cmp     edi, eax
+		ret
+	}
+}
+
 // funciton that disables stuff in load game screen
 int __declspec(naked) test_function2()
 {

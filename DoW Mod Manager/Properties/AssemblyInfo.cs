@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DoW Mod Manager")]
-[assembly: AssemblyCopyright("FragJacker © 2021")]
+[assembly: AssemblyCopyright("FragJacker © 2021-2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

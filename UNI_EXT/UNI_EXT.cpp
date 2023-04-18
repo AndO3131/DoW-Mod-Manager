@@ -51,6 +51,9 @@ Patch* patches[] = {
 
 	//*** END OF FINISHED PATCHES
 
+	// modify check for conquered races
+	new Patch(Call, SOULSTORM,{ 0x39105C, -1 }, (int)new_metamapShowNextFrameFunction, 14),
+
 	// modify SWFwidget bind from 'ToggleArmy' to 'deep_strike'
 	//new Patch(Overwrite, SOULSTORM,{ 0x391C4E, -1 },{ 0x20, 0x40, 0xAD, 0x00
 

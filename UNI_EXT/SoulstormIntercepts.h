@@ -32,6 +32,8 @@ int new_functionRunWhenRaceIsSelected();
 
 int isRaceInCampaignReplacementFunction();
 
+int new_metamapShowNextFrameFunction();
+
 //int mainIsRaceInCampaignReplacementFunction1();
 
 //int mainIsRaceInCampaignReplacementFunction2();

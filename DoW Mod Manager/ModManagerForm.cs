@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Runtime;
 using System.Text;
-using SSNoFog;
 using SSUNI_EXTTDLL;
 
 namespace DoW_Mod_Manager
@@ -19,17 +18,23 @@ namespace DoW_Mod_Manager
     /// <summary>
     /// This struct contains the module name and mod folder path for easy access.
     /// </summary>
+    // TODO: Try to make this struct readonly
     public struct ModuleEntry
     {
-        private string ModuleName, ModuleFolder;
+        private readonly string ModuleName;
+        private readonly string ModuleFolder;
+
         public ModuleEntry(string moduleName, string moduleFolder)
         {
             ModuleName = moduleName;
             ModuleFolder = moduleFolder;
         }
-        public string getName { get { return ModuleName; } }
-        public string getPath { get { return ModuleFolder; } }
+
+        public string GetName { get { return ModuleName; } }
+
+        public string GetPath { get { return ModuleFolder; } }
     };
+
     public partial class ModManagerForm : Form
     {
         public struct GameExecutable
@@ -218,13 +223,13 @@ namespace DoW_Mod_Manager
                 flowLayoutPanel1.MouseMove += new MouseEventHandler(loadUNI_EXTDLLNot_Found_CheckBox_hover);
             }
 
-            // Perform Autoupdate
+            // Check for an update
             if (settings[AUTOUPDATE] == 1)
             {
-                // Threads could work even if application would be closed
+                // Threads could work even if application would be closed (IsBackground = true by default)
                 new Thread(() =>
                 {
-                    // Once all is done check for updates.
+                    // Once all is done - check for an updates.
                     DialogResult result = DownloadHelper.CheckForUpdates(silently: true);
 
                     if (result == DialogResult.OK && settings[AOT_COMPILATION] == 1)
@@ -285,7 +290,6 @@ namespace DoW_Mod_Manager
         private void loadUNI_EXTDLLNot_Found_CheckBox_hover(object sender, MouseEventArgs e)
         {
             Control parent = sender as Control;
-
             if (parent == null)
                 return;
 
@@ -460,7 +464,7 @@ namespace DoW_Mod_Manager
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void ReselectSavedMod()
         {
-            int index = getSelectedModIndex();
+            int index = GetSelectedModIndex();
 
             if (installedModsListBox.Items.Count > index)
                 installedModsListBox.SelectedIndex = index;
@@ -814,8 +818,10 @@ namespace DoW_Mod_Manager
             SetUpAllNecessaryMods();
 
             // Invoke Mod Merger refresh should it exist.
-            if (modMerger != null)
-                modMerger.refreshAllModEntries();
+            modMerger?.refreshAllModEntries();
+
+            // Or using the old way of checking that
+            //if (modMerger != null) modMerger.refreshAllModEntries();
         }
 
         /// <summary>
@@ -831,11 +837,11 @@ namespace DoW_Mod_Manager
 
             if (index < 0 || index >= installedModsListBox.Items.Count)
             {
-                index = getSelectedModIndex();
+                index = GetSelectedModIndex();
                 installedModsListBox.SelectedIndex = index;
             }
             else
-                setSelectedModIndex(index);
+                SetSelectedModIndex(index);
 
             currentModuleFilePath = ModuleFilePaths[index];
             currentModuleFolder = FindModFolder(currentModuleFilePath);
@@ -856,7 +862,7 @@ namespace DoW_Mod_Manager
 
                     if (line.Contains("RequiredMod"))
                     {
-                        line = Program.GetValueFromLine(line, deleteModule: false);
+                        line = line.GetValueFromLine(deleteModule: false);
 
                         requiredModsList.Items.Add(line);
                     }
@@ -867,19 +873,25 @@ namespace DoW_Mod_Manager
 
             }
         }
+
         /// <summary>
         /// Gets the numerical index of the currently selected Mod.
         /// </summary>
         /// <returns></returns>
-        private int getSelectedModIndex()
+        // Request the inlining of this method
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private int GetSelectedModIndex()
         {
             return settings[CHOICE_INDEX];
         }
+
         /// <summary>
         /// Sets the numerical index of the currently selected Mod.
         /// </summary>
         /// <param name="index"></param>
-        private void setSelectedModIndex(int index)
+        // Request the inlining of this method
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void SetSelectedModIndex(int index)
         {
             settings[CHOICE_INDEX] = index;
         }
@@ -908,7 +920,7 @@ namespace DoW_Mod_Manager
                         while ((line = file.ReadLine()) != null)
                         {
                             if (line.Contains("ModFolder"))
-                                ModFolderPaths[i] = Program.GetValueFromLine(line, deleteModule: true);
+                                ModFolderPaths[i] = line.GetValueFromLine(deleteModule: true);
                         }
                     }
                 }
@@ -1474,8 +1486,9 @@ namespace DoW_Mod_Manager
             }
             finally
             {
-                if (fs != null)
-                    fs.Close();
+                fs?.Close();
+                // Or using the old way of checking that
+                //if (fs != null) fs.Close();
             }
 
             // File is not locked
@@ -1617,29 +1630,26 @@ namespace DoW_Mod_Manager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void open_folder_button_Click(object sender, EventArgs e)
+        private void OpenFolderButton_Click(object sender, EventArgs e)
         {
-            string pathToMod = Path.Combine(CurrentDir, AllValidModules[getSelectedModIndex()].getPath);
+            // Maybe there are no mods
+            if (AllValidModules.Count == 0)
+            {
+                Process.Start("explorer.exe", CurrentDir);
+                return;
+            }
+
+            string pathToMod = Path.Combine(CurrentDir, AllValidModules[GetSelectedModIndex()].GetPath);
             try
             {
                 if (Directory.Exists(pathToMod))
-                {
-                    ProcessStartInfo startInfo = new ProcessStartInfo
-                    {
-                        Arguments = pathToMod,
-                        FileName = "explorer.exe"
-                    };
-
-                    Process.Start(startInfo);
-                }
+                    Process.Start("explorer.exe", pathToMod);
                 else
-                {
-                    MessageBox.Show(string.Format("Directory: \"{0}\" does not exist!", pathToMod));
-                }
+                    ThemedMessageBox.Show($"Directory: \"{pathToMod}\" does not exist!");
             }
             catch (Exception)
             {
-                MessageBox.Show(string.Format("Permission to access the folder: \"{0}\" denied! Make sure you have the necessary access rights!", pathToMod));
+                ThemedMessageBox.Show($"Permission to access the folder: \"{pathToMod}\" denied! \nMake sure you have the necessary access rights!");
             }
         }
     }
