@@ -1,31 +1,110 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <Windows.h>
+#include <string>
+#include <fstream>
+#include <algorithm>
 #include "SoulstormPointers.h"
 
 //DWORD patch_clip_region;
 //DWORD* base_address;
 DWORD return_address;
+std::wstring currentModuleFolder;
 
-int checkActiveRaceIDInCampaign(int raceID)
+const int maxRaceArrayIndex = 30;
+
+const std::wstring campaignFolder = L"unification_campaign";
+
+const std::string races[maxRaceArrayIndex] =
+{ 
+	"chaos_marine_race", 
+	"dark_eldar_race", 
+	"darkangels_race", 
+	"deamons_race", 
+	"death_guard_race",
+	"eldar_race",
+	"emperors_children_race",
+	"fallen_angels_race",
+	"guard_race",
+	"harlequin_race",
+	"imperial_fists_race",
+	"inquisition_daemonhunt_race",
+	"khorne_marine_race",
+	"krieg_race",
+	"lotd_race",
+	"mechanicus_race",
+	"necron_race",
+	"npc_race",
+	"ork_race",
+	"salamanders_race",
+	"sisters_race",
+	"space_marine_race",
+	"ss_blood_angels_race",
+	"tau_race",
+	"templar_race",
+	"thirteenth_company_race",
+	"thousand_sons_race",
+	"tyranids_race",
+	"witch_hunters_race",
+	"ynnari_race"
+};
+
+int findIndexOfElementInArray(std::string raceName)
 {
-	switch (raceID)
+	int i;
+	for (i = 0; i < maxRaceArrayIndex; i++)
 	{
-		case 0: return 1; // chaos space marines race
-		case 1: return 1; // dark eldar race
-		case 3: return 1; // chaos deamons race
-		case 5: return 1; // eldar race
-		case 8: return 1; // imperial guard race
-		case 11: return 1; // inquisition daemonhunt race
-		case 16: return 1; // necron race
-		case 18: return 1; // ork race
-		case 20: return 1; // sisters of battle race
-		case 21: return 1; // space marines race
-		case 23: return 1; // tau race
-		case 27: return 1; // tyranids race
-		case 28: return 0; // witch hunters race
-		default: return 0;
+		if (races[i] == raceName)
+		{
+			return i;
+		}
 	}
+}
+
+int checkActiveRaceIDInCampaign(int enemyRaceID, int playerRaceID)
+{
+	int finalState = enemyRaceID;
+
+	HMODULE hModule = GetModuleHandle(nullptr);
+	if (hModule) {
+
+		wchar_t path[256];
+		GetModuleFileName(hModule, path, sizeof(path));
+		size_t found = std::wstring(path).find_last_of(L"\\");
+		currentModuleFolder = std::wstring(std::wstring(path).substr(0, found));
+
+		std::ifstream indata;
+		indata.open(currentModuleFolder + L"\\" + campaignFolder + L"\\data\\scar\\Campaign_Race_substitution_Settings.SCAR");
+		if (indata)
+		{
+			std::string line;
+			size_t equal;
+
+			//std::ofstream outdata;
+			//outdata.open(currentModuleFolder + L"\\unification_campaign\\data\\scar\\example2.bin");
+
+			while (std::getline(indata, line))
+			{
+				//int* found_pos = find(races[0], races[28], "sisters_race");
+				equal = line.find_first_of("\"");
+				if (equal != std::string::npos)
+				{
+					line = line.substr(equal + 1);
+					line.erase(remove(line.begin(), line.end(), '\"'), line.end());
+					if (enemyRaceID == findIndexOfElementInArray(line))
+					{
+						//equal = line.find_last_of("=");
+						//outdata << line.substr(equal + 1) << std::endl;
+						finalState = playerRaceID;
+					}
+				}
+			}
+			indata.close();
+
+			//outdata.close();
+		}
+	}
+	return finalState;
 }
 
 int convertRaceIDtoPlanetNumber(int raceID)
@@ -480,10 +559,10 @@ jump_2:
 		fld		[esp + 0x24 - 0x14] // ?
 		mov     edx, [esi + 0x164] // number of terrains on metamap + 1 in dark crusade, although points to raceID in soulstorm
 		// dark crusade's [esi + 0x164] doesn't seem to work - no model found there.
-		push    ebx // unknown pointer
+		//push    ebx // unknown pointer
 		push	ebx
 		call	convertRaceIDtoPlanetNumber
-		add		esp, 0x04
+		//add		esp, 0x04
 		fstp	[esp] // var_154 ArmyModelScale value into var_154?
 		lea     ecx, [esp + 0x24 - 0xC] // var_134 DATAMARK id data start
 		push    ecx // var_134 DATAMARK id data start
@@ -1015,7 +1094,7 @@ int __declspec(naked) new_placeObjectsOnMetamapOnLoadFunction()
 		// required
 		mov     ecx, [esi + 0x138]
 		mov     ebx, [esp + 0x24 - 0xC]
-		mov[ecx + edi * 4], ebx
+		mov		[ecx + edi * 4], ebx
 		push    edi
 		mov     ecx, esi
 		call    SOULSTORM_placeCommanderIconOnMetamap
@@ -1497,6 +1576,13 @@ int __declspec(naked) new_metamapShowNextFrameFunction()
 		mov     edx, [eax + 0x238]
 		mov     ecx, esi
 		call    edx
+		// added code
+		push	eax
+		push	edi
+		call	checkActiveRaceIDInCampaign
+		add		esp, 0x08
+		// end of added code
+
 		cmp     edi, eax
 		ret
 	}

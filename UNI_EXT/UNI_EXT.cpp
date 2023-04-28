@@ -9,9 +9,6 @@
 #include "Patch.h"
 #include "SoulstormIntercepts.h"
 
-string UNI_EXT::path;
-HINSTANCE UNI_EXT::instance;
-
 Patch* patches[] = {
 
 	//*** FINISHED PATCHES ***

@@ -7,8 +7,9 @@
 using namespace std;
 
 namespace UNI_EXT {
-	extern string path;
-	extern HINSTANCE instance;
+	//string path;
+	//string currentModuleFolder;
+	//extern HINSTANCE instance;
 
 	extern void Startup(HINSTANCE instance);
 
